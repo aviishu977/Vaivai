@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Photo Feed</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background-color: #f0f2f5;
+      color: #212121;
+      max-width: 480px;
+      margin: auto;
+    }
+    header {
+      background-color: #4caf50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    main {
+      padding: 1rem;
+    }
+    input,
+    button,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus,
+    textarea:focus {
+      border-color: #4caf50;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #43a047;
+    }
+    .hidden {
+      display: none !important;
+    }
+    video,
+    canvas,
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    /* აქ ვიდეო სარკე: */
+    video {
+      transform: scaleX(-1);
+    }
+    .photo-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .photo-text {
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+    .photo-meta {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <header>📸 Live Photo Feed</header>
+  <main>
+    <div id="authSection">
+      <input type="email" id="email" placeholder="ელ.ფოსტა" />
+      <input type="password" id="password" placeholder="პაროლი" />
+      <button id="register">რეგისტრაცია</button>
+      <button id="login">შესვლა</button>
+      <button id="logout" class="hidden" style="background: #e53935;">
+        გასვლა
+      </button>
+    </div>
+
+    <button id="openCamera" class="hidden">გადაიღე ფოტო</button>
+    <div id="cameraSection" class="hidden">
+      <video id="video" autoplay playsinline></video>
+      <textarea id="photoText" placeholder="დაამატე ტექსტი ფოტოასთან"></textarea>
+      <button id="snap">ატვირთე ფოტო</button>
+    </div>
+
+    <div id="photoFeed"></div>
+  </main>
+
+  <script type="module">
+    import {
+      initializeApp,
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      collection,
+      onSnapshot,
+      query,
+      orderBy,
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+      authDomain: "photog-457a1.firebaseapp.com",
+      projectId: "photog-457a1",
+      storageBucket: "photog-457a1.appspot.com",
+      messagingSenderId: "568507243860",
+      appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const register = document.getElementById("register");
+    const login = document.getElementById("login");
+    const logout = document.getElementById("logout");
+    const openCamera = document.getElementById("openCamera");
+    const snap = document.getElementById("snap");
+    const video = document.getElementById("video");
+    const cameraSection = document.getElementById("cameraSection");
+    const photoText = document.getElementById("photoText");
+    const photoFeed = document.getElementById("photoFeed");
+
+    let stream;
+
+    register.onclick = () => {
+      createUserWithEmailAndPassword(auth, email.value, password.value).catch(
+        (e) => alert(e.message)
+      );
+    };
+
+    login.onclick = () => {
+      signInWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
+        alert(e.message)
+      );
+    };
+
+    logout.onclick = () => {
+      signOut(auth);
+    };
+
+    function startCamera() {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((s) => {
+          stream = s;
+          video.srcObject = stream;
+          cameraSection.classList.remove("hidden");
+        })
+        .catch((e) => alert("კამერა ვერ ჩაირთო: " + e.message));
+    }
+
+    snap.onclick = async () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+
+      // ფოტოს სარკის არ იყოს, ვატრიალებთ აქ
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+
+      ctx.drawImage(video, 0, 0);
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.8);
+
+      const user = auth.currentUser;
+      if (!user) return;
+
+      await setDoc(doc(db, "photos", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        photo: imgData,
+        text: photoText.value || "",
+        timestamp: new Date(),
+      });
+
+      cameraSection.classList.add("hidden");
+      stream.getTracks().forEach((track) => track.stop());
+      photoText.value = "";
+    };
+
+    function renderFeed() {
+      const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
+      onSnapshot(q, (snap) => {
+        photoFeed.innerHTML = "";
+        snap.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.className = "photo-card";
+          div.innerHTML = `
+            <img src="${data.photo}" alt="photo" />
+            ${
+              data.text
+                ? `<div class='photo-text'>${data.text}</div>`
+                : ""
+            }
+            <div class="photo-meta">${data.email} • ${new Date(
+            data.timestamp.toDate()
+          ).toLocaleString()}</div>
+          `;
+          photoFeed.appendChild(div);
+        });
+      });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      const show = user !== null;
+      [email, password, register, login].forEach(
+        (el) => (el.style.display = show ? "none" : "block")
+      );
+      [logout, openCamera].forEach((el) =>
+        el.classList.toggle("hidden", !show)
+      );
+      if (show) renderFeed();
+    });
+
+    openCamera.onclick = startCamera;
+  </script>
+</body>
+</html>
