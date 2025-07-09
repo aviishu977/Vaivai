@@ -4,192 +4,457 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>პოლაროიდი</title>
-  <!-- ძირითადი SEO თეგები -->
-<meta name="description" content="გადაიღე ფოტო პირდაპირ ბრაუზერიდან, ატვირთე და გაუზიარე მარტივად! Geo Polaroid – სწრაფი, თანამედროვე და ქართული ფოტოსაზიარო პლატფორმა.">
-<meta name="keywords" content="Geo Polaroid, პოლაროიდი, ფოტო აპი, ონლაინ გადაღება, selfie ქართულად, სელფი აპლიკაცია, კამერა საიტზე, ფოტო ბრაუზერში, ქართული ფოტო საიტი, ონლაინ ფოტოაპი, browser camera, selfie platform Georgia">
-<meta name="author" content="შეჩემა">
-<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="description" content="გადაიღე ფოტო პირდაპირ ბრაუზერიდან, ატვირთე და გაუზიარე მარტივად! Geo Polaroid – სწრაფი, თანამედyოფროვე და ქართული ფოტოსაზიარო პლატფორმა.">
+  <meta name="keywords" content="Geo Polaroid, პოლაროიდი, ფოტო აპი, ონლაინ გადაღება, selfie ქართულად, სელფი აპლიკაცია, კამერა საიტზე, ფოტო ბრაუზერში, ქართული ფოტო საიტი, ონლაინ ფოტოაპი, browser camera, selfie platform Georgia">
+  <meta name="author" content="შეჩემა">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-<!-- Open Graph (Facebook, LinkedIn და სხვებისთვის) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="Geo Polaroid – გადაიღე სელფი პირდაპირ საიტიდან">
-<meta property="og:description" content="სელფის გადაღება, ატვირთვა და გაზიარება – პირდაპირ ბრაუზერიდან. ქართული ონლაინ პლატფორმა სწრაფი ფოტოსაზიარებლად.">
-<meta property="og:image" content="https://vaxchemi.netlify.app/preview.jpg">
-<meta property="og:url" content="https://vaxchemi.netlify.app/">
-<meta property="og:site_name" content="Geo Polaroid">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Geo Polaroid – გადაიღე სელფი პირდაპირ საიტიდან">
+  <meta property="og:description" content="სელფის გადაღება, ატვირთვა და გაზიარება – პირდაპირ ბრაუზერიდან. ქართული ონლაინ პლატფორმა სწრაფი ფოტოსაზიარებლად.">
+  <meta property="og:image" content="https://vaxchemi.netlify.app/preview.jpg">
+  <meta property="og:url" content="https://vaxchemi.netlify.app/">
+  <meta property="og:site_name" content="Geo Polaroid">
 
-<!-- Twitter Meta -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Geo Polaroid – გადაიღე შენი მომენტი ონლაინ">
-<meta name="twitter:description" content="გადაიღე და გაუზიარე ფოტოები ონლაინ – პირდაპირ შენი ბრაუზერიდან ქართულად.">
-<meta name="twitter:image" content="https://vaxchemi.netlify.app/preview.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Geo Polaroid – გადაიღე შენი მომენტი ონლაინ">
+  <meta name="twitter:description" content="გადაიღე და გაუზიარე ფოტოები ონლაინ – პირდაპირ შენი ბრაუზერიდან ქართულად.">
+  <meta name="twitter:image" content="https://vaxchemi.netlify.app/preview.jpg">
 
-<!-- Favicon -->
-<link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="favicon.png" type="image/png">
 
-<!-- Canonical URL -->
-<link rel="canonical" href="https://vaxchemi.netlify.app/">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  <link rel="canonical" href="https://vaxchemi.netlify.app/">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Rounded&display=swap" rel="stylesheet" />
+  
   <style>
-    :root {
-      --color-bg: #f4f6f9;
-      --color-primary: #6C9BCF;
-      --color-primary-dark: #517da7;
-      --color-accent: #FFC6AC;
-      --color-error: #FF6B6B;
-      --color-white: #ffffff;
-      --color-text: #1e1e1e;
-      --color-muted: #777777;
-      --font-main: 'Segoe UI', sans-serif;
-      --radius: 12px;
-      --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-      --spacing: 1rem;
-      --max-width: 480px;
-      --btn-height: 42px;
-      --btn-font-size: 0.95rem;
-    }
-    @font-face {
-      font-family: 'CustomFont'; /* თქვენი ფონტის სახელი */
-      src: url('alk-sanet.ttf');
-    }
-    * {
-      box-sizing: border-box;
-      font-family: 'CustomFont';
-      line-height: 1.3;
-    }
-    body {
-      margin: 0;
-      font-family: var(--font-main);
-      background: var(--color-bg);
-      color: var(--color-text);
-      max-width: var(--max-width);
-      margin: auto;
-    }
-    header {
-      background: var(--color-primary);
-      color: var(--color-white);
-      padding: var(--spacing);
-      font-size: 1.2rem;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .material-symbols-rounded {
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
-      vertical-align: middle;
-    }
-    main {
-      padding: var(--spacing);
-    }
-    input,
-    button,
-    textarea {
-      width: 100%;
-      padding: 10px 14px;
-      margin-bottom: 10px;
-      font-size: 1rem;
-      border-radius: var(--radius);
-      border: 1px solid #ccc;
-    }
-    button {
-      background: var(--color-primary);
-      color: var(--color-white);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: var(--btn-font-size);
-      height: var(--btn-height);
-      padding: 0 1rem;
-      line-height: 1;
-      user-select: none;
-    }
-    button:hover {
-      background: var(--color-primary-dark);
-    }
-    #switchCameraBtn {
-      background: var(--color-accent);
-      color: black;
-    }
-    #logout {
-      background: var(--color-error);
-      width: auto;
-      padding: 0 0.8rem;
-    }
-    .hidden {
-      display: none !important;
-    }
-    video,
-    img {
-      width: 100%;
-      border-radius: var(--radius);
-      margin-bottom: 10px;
-    }
-    video.mirror {
-      transform: scaleX(-1);
-    }
-    #photoFeed .card {
-      background: var(--color-white);
-      padding: 10px;
-      border-radius: var(--radius);
-      margin-bottom: 10px;
-      box-shadow: var(--shadow);
-    }
-    .meta {
-      font-size: 0.8rem;
-      color: var(--color-muted);
-    }
-    .action-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    #openCamera {
-      flex: 1;
-    }
+    /* Design Tokens / Variables */
+:root {
+  --color-bg: #000000; /* სრული შავი ფონზე */
+  --color-white: #FFFFFF;
+  --color-text-main: #E0E0E0; /* თეთრის ნიადაგზე ღია ნაცრისფერი */
+  --color-text-muted: #AAAAAA; /* საშუალო ნაცრისფერი */
+  --color-card-bg: #121212; /* მუქი კარტები */
+  --color-border: #333333; /* რბილი საზღვარი */
+  --color-error: #FF5555; /* წითელი შეცდომისთვის */
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1); /* მსუბუქი თეთრი შლეიფი */
+  --transition-ease: all 0.3s ease-in-out;
+}
+@font-face {
+  font-family: 'myffont';
+  src: url('alk-sanet.ttf');
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'myffont';
+  line-height: 1.5;
+}
 
-    /* კამერის ზედა ბარი */
-    .camera-top-bar {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      align-items: center;
-    }
-    #closeCamera {
-      background-color: var(--color-error);
-      border: none;
-      border-radius: var(--radius);
-      color: #fff;
-      font-size: 1.4rem;
-      font-weight: bold;
-      padding: 0 1rem;
-      cursor: pointer;
-      height: var(--btn-height);
-      user-select: none;
-      flex-shrink: 0;
-      width: 15%;
-    }
-    #closeCamera:hover {
-      background-color: #d32f2f;
-    }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  max-width: var(--max-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+/* Material Icons */
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  vertical-align: middle;
+  font-size: 1.75rem;
+  color: var(--color-white);
+  transition: color 0.3s ease;
+}
+
+/* Header */
+header {
+  background: var(--color-bg);
+  color: var(--color-white);
+  padding: var(--spacing-unit);
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+  user-select: none;
+}
+
+/* Hover effect for icons in header */
+header .material-symbols-rounded:hover {
+  color: #bbb;
+  cursor: default;
+}
+
+/* Main */
+main {
+  padding: var(--spacing-unit);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+}
+
+/* Inputs and Textarea */
+input,
+textarea {
+  width: 100%;
+  padding: 10px var(--spacing-unit);
+  margin-bottom: var(--spacing-unit);
+  font-size: 1.05rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  background: #222; /* მუქი ინტერპოლირებული ფონზე */
+  color: var(--color-white);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  caret-color: var(--color-white);
+  font-weight: 400;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--color-white);
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.3);
+  background: #111;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  height: var(--button-height);
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  line-height: 1;
+  user-select: none;
+  background: transparent;
+  color: var(--color-white);
+  border: 1.5px solid var(--color-white);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+}
+
+button:last-child {
+  margin-bottom: 0;
+}
+
+button:hover {
+  background: var(--color-white);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Specific Buttons */
+#switchCameraBtn {
+  background: transparent;
+  border: 1.5px solid var(--color-white);
+  width: auto;
+  flex-shrink: 0;
+  height: var(--button-height);
+  padding: 0 1.5rem;
+  color: var(--color-white);
+}
+
+#switchCameraBtn:hover {
+  background: var(--color-white);
+  color: var(--color-bg);
+}
+
+#logout {
+  background: transparent;
+  border: 1.5px solid var(--color-text-muted);
+  color: var(--color-text-muted);
+  width: auto;
+  padding: 0 1.25rem;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+
+#logout:hover {
+  background: var(--color-text-muted);
+  color: var(--color-bg);
+  border-color: var(--color-text-muted);
+}
+
+/* Spacing for snap button */
+ {
+  margin-top: calc(var(--spacing-unit) * 1.5);
+  background: var(--color-white);
+  color: var(--color-bg);
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+#snap:hover {
+  background: #ddd;
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.5);
+}
+
+/* Hidden utility */
+.hidden {
+  display: none !important;
+}
+
+/* Video & Image */
+video,
+img {
+  width: 100%;
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-unit);
+  background: #000;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+video {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
+  max-height: 380px !important;
+  object-fit: cover !important;
+  display: block;
+  border-radius: var(--border-radius-md);
+}
+
+video.mirror {
+  transform: scaleX(-1);
+}
+
+/* Photo Feed */
+#photoFeed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+  margin-bottom: 20px;
+}
+
+#photoFeed .card {
+  background: var(--color-card-bg);
+  padding: var(--spacing-unit);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-elevation-1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  opacity: 0;
+  border: 2px solid var(--color-white);
+  animation: fadeInUp 0.6s forwards;
+}
+
+#photoFeed .card img {
+  margin-bottom: var(--spacing-unit);
+  max-height: 380px;
+  width: 100%;
+  border-radius: var(--border-radius-md);
+  filter: brightness(0.95);
+  transition: filter 0.3s ease;
+}
+
+#photoFeed .card img:hover {
+  filter: brightness(1);
+}
+
+#photoFeed .card p {
+  width: 100%;
+  text-align: left;
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+  padding: 0 5px;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  width: 100%;
+  text-align: right;
+  padding: 0 5px;
+}
+
+/* Action Rows & Layout */
+#authSection,
+#cameraSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing-unit) / 2);
+}
+#authSection{
+  margin-top: 0px;
+}
+#userActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-unit);
+  margin-bottom: var(--spacing-unit);
+}
+
+#openCamera {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+/* Camera Top Bar */
+.camera-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--spacing-unit);
+  gap: var(--spacing-unit);
+}
+
+#closeCamera {
+  background-color: var(--color-card-bg);
+  border: 1.5px solid var(--color-text-muted);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-main);
+  height: var(--button-height);
+  width: var(--button-height);
+  min-width: var(--button-height);
+  padding: 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+#closeCamera .material-symbols-rounded {
+  font-size: 1.8rem;
+  color: var(--color-text-muted);
+  transition: color 0.3s ease;
+}
+
+#closeCamera:hover {
+  background-color: var(--color-text-muted);
+  color: var(--color-bg);
+}
+
+#closeCamera:hover .material-symbols-rounded {
+  color: var(--color-bg);
+}
+
+/* FadeInUp animation for cards */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button icon pulse on hover */
+button .material-symbols-rounded {
+  transition: transform 0.3s ease;
+}
+
+button:hover .material-symbols-rounded {
+  transform: scale(1.1);
+  color: var(--color-bg);
+}
+
+/* Scrollbar customization for WebKit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* Responsive tweak for small screens */
+@media (max-width: 400px) {
+  header {
+    gap: 0.5rem;
+  }
+  button {
+    font-size: 1rem;
+  }
+  #snap {
+    font-size: 1rem;
+    height: 48px;
+  }
+  video {
+    height: 300px;
+  }
+}
+#login{
+  margin-top: 10px;
+}
   </style>
 </head>
 <body>
-  <header>
-    <span class="material-symbols-rounded">photo_camera</span>
-    <strong>პოლაროიდი</strong>
-    <span class="material-symbols-rounded">photo_camera</span>
-  </header>
+  <header>პოლაროიდი</header>
   <main>
     <div id="authSection">
-      <input id="email" placeholder="ელ. ფოსტა" />
-      <input id="password" type="password" placeholder="პაროლი" />
+      <input id="email" placeholder="ელ. ფოსტა" type="email" autocomplete="email" />
+      <input id="password" type="password" placeholder="პაროლი" autocomplete="current-password" />
       <button id="register">
         <span class="material-symbols-rounded">person_add</span> რეგისტრაცია
       </button>
@@ -209,7 +474,9 @@
 
     <div id="cameraSection" class="hidden">
       <div class="camera-top-bar">
-        <button id="closeCamera">×</button>
+        <button id="closeCamera">
+            <span class="material-symbols-rounded">close</span>
+        </button>
         <button id="switchCameraBtn">
           <span class="material-symbols-rounded">switch_camera</span> კამერის გადართვა
         </button>
@@ -217,7 +484,7 @@
       <video id="video" autoplay playsinline></video>
       <textarea id="photoText" placeholder="ტექსტი ფოტოსთვის (სურვილისამებრ)"></textarea>
       <button id="snap">
-        <span class="material-symbols-rounded">upload</span> ატვირთე
+        <span class="material-symbols-rounded">upload</span>
       </button>
     </div>
 
@@ -243,19 +510,21 @@
       onAuthStateChanged,
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+    // Firebase Configuration - REPLACE WITH YOUR ACTUAL FIREBASE CONFIG
     const firebaseConfig = {
-      apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
-      authDomain: "photog-457a1.firebaseapp.com",
-      projectId: "photog-457a1",
-      storageBucket: "photog-457a1.appspot.com",
-      messagingSenderId: "568507243860",
-      appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1",
+      apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI", // <--- REPLACE THIS
+      authDomain: "photog-457a1.firebaseapp.com", // <--- REPLACE THIS
+      projectId: "photog-457a1", // <--- REPLACE THIS
+      storageBucket: "photog-457a1.appspot.com", // <--- REPLACE THIS
+      messagingSenderId: "568507243860", // <--- REPLACE THIS
+      appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1", // <--- REPLACE THIS
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    // Get DOM Elements
     const email = document.getElementById("email");
     const password = document.getElementById("password");
     const register = document.getElementById("register");
@@ -270,76 +539,120 @@
     const cameraSection = document.getElementById("cameraSection");
     const userActions = document.getElementById("userActions");
     const authSection = document.getElementById("authSection");
+    const closeCamera = document.getElementById("closeCamera");
 
-    let stream;
-    let currentFacingMode = "user";
+    let stream; // To hold the camera stream
+    let currentFacingMode = "user"; // Default to front camera
 
+    /**
+     * Starts the camera and displays the video feed.
+     * Handles camera permissions and mirrors the user-facing camera.
+     */
     async function startCamera() {
+      // Stop any existing camera stream
       if (stream) stream.getTracks().forEach((track) => track.stop());
       try {
+        // Request camera access
         stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: currentFacingMode },
         });
-        video.srcObject = stream;
+        video.srcObject = stream; // Set video source to the stream
+
+        // Show camera section and hide others
         cameraSection.classList.remove("hidden");
-        // აქ საიტიდან ყველა სხვა ელემენტი დამალე, გარდა კამერის სექციის
-        authSection.style.display = "none";
-        userActions.style.display = "none";
-        photoFeed.style.display = "none";
+        authSection.classList.add("hidden");
+        userActions.classList.add("hidden");
+        photoFeed.classList.add("hidden");
+
+        // Mirror the video horizontally for user-facing camera
         video.classList.toggle("mirror", currentFacingMode === "user");
       } catch (err) {
         alert("კამერის ჩართვა ვერ მოხერხდა: " + err.message);
       }
     }
 
+    /**
+     * Stops the camera stream and hides the camera section.
+     * Resets the photo text input.
+     */
     function stopCamera() {
       cameraSection.classList.add("hidden");
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
-        stream = null;
+        stream = null; // Clear the stream reference
       }
-      photoText.value = "";
+      photoText.value = ""; // Clear any text in the input field
 
-      // აქ საიტის სხვა ელემენტები ისევ გამოჩნდება
-      authSection.style.display = "";
-      userActions.style.display = "";
-      photoFeed.style.display = "";
+      // Re-evaluate and show other sections based on authentication state
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          authSection.classList.add("hidden");
+          userActions.classList.remove("hidden");
+          photoFeed.classList.remove("hidden");
+        } else {
+          authSection.classList.remove("hidden");
+          userActions.classList.add("hidden");
+          photoFeed.classList.add("hidden");
+        }
+      });
     }
 
+    /**
+     * Switches between front and rear cameras.
+     */
     switchBtn.onclick = () => {
       currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
-      startCamera();
+      startCamera(); // Restart camera with new facing mode
     };
 
+    /**
+     * Handles closing the camera view.
+     */
     closeCamera.onclick = stopCamera;
 
+    /**
+     * Captures a photo from the video stream, converts it to a data URL,
+     * and uploads it to Firestore along with the user's text.
+     */
     snap.onclick = async () => {
       const canvas = document.createElement("canvas");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext("2d");
+
+      // Apply mirroring transformation for user-facing camera before drawing
       if (currentFacingMode === "user") {
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
       }
-      ctx.drawImage(video, 0, 0);
-      const imgData = canvas.toDataURL("image/jpeg", 0.8);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height); // Draw video frame onto canvas
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Get image data as JPEG (0.8 quality)
       const user = auth.currentUser;
-      if (!user) return alert("გთხოვთ, გაიაროთ ავტორიზაცია");
+
+      if (!user) {
+        alert("გთხოვთ, გაიაროთ ავტორიზაცია");
+        return;
+      }
+
       try {
+        // Save photo data to Firestore, using user's UID as document ID
         await setDoc(doc(db, "photos", user.uid), {
           uid: user.uid,
           email: user.email,
           photo: imgData,
-          text: photoText.value || "",
-          timestamp: new Date(),
+          text: photoText.value || "", // Use empty string if no text
+          timestamp: new Date(), // Current timestamp
         });
-        stopCamera();
+        stopCamera(); // Stop camera after snapping
       } catch (e) {
         alert("სურათის ატვირთვა ვერ მოხერხდა: " + e.message);
       }
     };
 
+    /**
+     * Handles user registration with email and password.
+     */
     register.onclick = () => {
       if (!email.value || !password.value) {
         alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
@@ -349,6 +662,10 @@
         alert(e.message)
       );
     };
+
+    /**
+     * Handles user login with email and password.
+     */
     login.onclick = () => {
       if (!email.value || !password.value) {
         alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
@@ -358,37 +675,62 @@
         alert(e.message)
       );
     };
+
+    /**
+     * Handles user logout.
+     */
     logout.onclick = () => signOut(auth);
+
+    /**
+     * Handles opening the camera from the main screen.
+     */
     openCamera.onclick = () => startCamera();
 
+    /**
+     * Fetches and renders photos from Firestore in real-time.
+     */
     function renderFeed() {
+      // Query photos collection, ordered by timestamp in descending order
       const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
+      
+      // Listen for real-time updates
       onSnapshot(q, (snapshot) => {
-        photoFeed.innerHTML = "";
+        photoFeed.innerHTML = ""; // Clear existing feed content
         snapshot.forEach((doc) => {
           const d = doc.data();
-          const timeStamp = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
+          const timeStamp = d.timestamp?.toDate ? d.timestamp.toDate() : new Date(); // Convert Firebase timestamp
+          
           const div = document.createElement("div");
-          div.className = "card";
+          div.className = "card"; // Apply card styling
           div.innerHTML = `
             <img src="${d.photo}" alt="photo" />
-            ${d.text ? `<p>${d.text}</p>` : ""}
-            <div class="meta">${d.email} | ${timeStamp.toLocaleString()}</div>
+            ${d.text ? `<p>${d.text}</p>` : ""} <div class="meta">${d.email} | ${timeStamp.toLocaleString()}</div>
           `;
-          photoFeed.appendChild(div);
+          photoFeed.appendChild(div); // Add card to the feed
         });
       });
     }
 
+    /**
+     * Handles authentication state changes.
+     * Shows/hides sections based on whether a user is logged in.
+     */
     onAuthStateChanged(auth, (user) => {
-      const loggedIn = !!user;
-      email.style.display = password.style.display = register.style.display = login.style.display = loggedIn ? "none" : "block";
-      userActions.classList.toggle("hidden", !loggedIn);
+      const loggedIn = !!user; // Check if user object exists
+
       if (loggedIn) {
-        renderFeed();
+        // User is logged in: hide auth, show user actions and feed
+        authSection.classList.add("hidden");
+        userActions.classList.remove("hidden");
+        photoFeed.classList.remove("hidden");
+        renderFeed(); // Start rendering photo feed
       } else {
-        stopCamera();
-        photoFeed.innerHTML = "";
+        // User is logged out: show auth, hide user actions and feed
+        authSection.classList.remove("hidden");
+        userActions.classList.add("hidden");
+        photoFeed.classList.add("hidden");
+        stopCamera(); // Ensure camera is off if user logs out
+        photoFeed.innerHTML = ""; // Clear photo feed on logout
       }
     });
   </script>
