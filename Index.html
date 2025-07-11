@@ -613,6 +613,48 @@ button:hover .material-symbols-rounded {
 .modal a{
   color: #FF5555;
 }
+.filter-btn {
+  background: transparent;
+  border: 1.5px solid var(--color-white);
+  color: var(--color-white);
+  padding: 10px 14px;
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  font-family: 'myffont', 'Inter', sans-serif;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--color-white);
+  color: var(--color-bg);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+#filterSelect {
+  width: 100%;
+  padding: 15px var(--spacing-unit);
+  margin-bottom: var(--spacing-unit);
+  font-size: 1.05rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border);
+  background: #222;
+  color: var(--color-white);
+  outline: none;
+  transition: border-color 0.3s ease;
+  font-weight: 400;
+  user-select: none;
+}
+
+#filterSelect:focus {
+  border-color: var(--color-white);
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.3);
+  background: #111;
+}
+
   </style>
 </head>
 <body>
@@ -707,7 +749,29 @@ button:hover .material-symbols-rounded {
           <span class="material-symbols-rounded">switch_camera</span> კამერის გადართვა
         </button>
       </div>
-      <video id="video" autoplay playsinline></video>
+<video id="video" autoplay playsinline></video>
+<select id="filterSelect">
+  <option value="none">None</option>
+  <option value="grayscale(100%)">Grayscale</option>
+  <option value="sepia(60%)">Sepia</option>
+  <option value="contrast(150%)">Contrast</option>
+  <option value="brightness(120%)">Brightness</option>
+  <option value="blur(3px)">Blur</option>
+  <option value="invert(100%)">Invert</option>
+  <option value="saturate(200%)">Saturate</option>
+  <option value="hue-rotate(90deg)">Hue Rotate</option>
+  <option value="opacity(50%)">Opacity</option>
+  <option value="drop-shadow(3px 3px 3px #777)">Drop Shadow</option>
+  <option value="brightness(80%) contrast(120%)">Bright & Contrast</option>
+  <option value="grayscale(50%) sepia(30%)">Grayscale + Sepia</option>
+  <option value="hue-rotate(180deg) saturate(150%)">Hue Rotate + Saturate</option>
+  <option value="blur(1.5px) contrast(130%)">Blur + Contrast</option>
+  <option value="sepia(80%) saturate(180%)">Sepia + Saturate</option>
+  <option value="contrast(200%) brightness(90%)">High Contrast + Dim</option>
+  <option value="grayscale(100%) brightness(110%)">BW + Brightness</option>
+  <option value="drop-shadow(5px 5px 5px rgba(0,0,0,0.5))">Strong Drop Shadow</option>
+</select>
+
       <textarea id="photoText" placeholder="ტექსტი ფოტოსთვის (სურვილისამებრ)"></textarea>
       <button id="snap">
         <span class="material-symbols-rounded">upload</span>
@@ -719,256 +783,224 @@ button:hover .material-symbols-rounded {
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    collection,
-    onSnapshot,
-    query,
-    orderBy,
-  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
-    authDomain: "photog-457a1.firebaseapp.com",
-    projectId: "photog-457a1",
-    storageBucket: "photog-457a1.appspot.com",
-    messagingSenderId: "568507243860",
-    appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1",
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+  authDomain: "photog-457a1.firebaseapp.com",
+  projectId: "photog-457a1",
+  storageBucket: "photog-457a1.appspot.com",
+  messagingSenderId: "568507243860",
+  appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1",
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-  // DOM ელემენტები
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const register = document.getElementById("register");
-  const login = document.getElementById("login");
-  const logout = document.getElementById("logout");
-  const openCamera = document.getElementById("openCamera");
-  const snap = document.getElementById("snap");
-  const switchBtn = document.getElementById("switchCameraBtn");
-  const video = document.getElementById("video");
-  const photoText = document.getElementById("photoText");
-  const photoFeed = document.getElementById("photoFeed");
-  const cameraSection = document.getElementById("cameraSection");
-  const userActions = document.getElementById("userActions");
-  const authSection = document.getElementById("authSection");
-  const closeCamera = document.getElementById("closeCamera");
+// ელემენტები
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const registerBtn = document.getElementById("register");
+const loginBtn = document.getElementById("login");
+const logoutBtn = document.getElementById("logout");
+const openCameraBtn = document.getElementById("openCamera");
+const snapBtn = document.getElementById("snap");
+const switchCameraBtn = document.getElementById("switchCameraBtn");
+const video = document.getElementById("video");
+const filterSelect = document.getElementById("filterSelect");
+const photoText = document.getElementById("photoText");
+const photoFeed = document.getElementById("photoFeed");
+const cameraSection = document.getElementById("cameraSection");
+const userActions = document.getElementById("userActions");
+const authSection = document.getElementById("authSection");
+const closeCameraBtn = document.getElementById("closeCamera");
 
-  let stream;
-  let currentFacingMode = "user";
+let stream = null;
+let currentFacingMode = "user";
 
-  async function startCamera() {
-    if (stream) stream.getTracks().forEach((track) => track.stop());
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: currentFacingMode },
-      });
-      video.srcObject = stream;
+// კამერის ჩართვა
+async function startCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+  }
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: currentFacingMode }
+    });
+    video.srcObject = stream;
+    video.style.filter = filterSelect.value || "none";
+    video.classList.toggle("mirror", currentFacingMode === "user");
 
-      cameraSection.classList.remove("hidden");
-      authSection.classList.add("hidden");
-      userActions.classList.add("hidden");
-      photoFeed.classList.add("hidden");
+    cameraSection.classList.remove("hidden");
+    authSection.classList.add("hidden");
+    userActions.classList.add("hidden");
+    photoFeed.classList.add("hidden");
+  } catch (e) {
+    alert("კამერის ჩართვა ვერ მოხერხდა: " + e.message);
+  }
+}
 
-      video.classList.toggle("mirror", currentFacingMode === "user");
-    } catch (err) {
-      alert("კამერის ჩართვა ვერ მოხერხდა: " + err.message);
-    }
+// კამერის გამორთვა
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+  cameraSection.classList.add("hidden");
+  photoText.value = "";
+
+  authSection.classList.remove("hidden");
+  userActions.classList.add("hidden");
+  photoFeed.classList.add("hidden");
+}
+
+// ფილტრის ცვლილება ვიდეოზე
+filterSelect.addEventListener("change", () => {
+  video.style.filter = filterSelect.value || "none";
+});
+
+// კამერის გადართვა
+switchCameraBtn.addEventListener("click", () => {
+  currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+  startCamera();
+});
+
+// გადაღება და ატვირთვა (ძველი ფოტო ანაცვლებს ახალს)
+snapBtn.addEventListener("click", async () => {
+  if (!stream) {
+    alert("გთხოვთ, ჩართოთ კამერა");
+    return;
   }
 
-  function stopCamera() {
-    cameraSection.classList.add("hidden");
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      stream = null;
-    }
+  if (video.videoWidth === 0 || video.videoHeight === 0) {
+    alert("ვიდეო ჯერ არ არის მზად, სცადე ცოტა მოგვიანებით");
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext("2d");
+
+  ctx.filter = filterSelect.value || "none";
+
+  if (currentFacingMode === "user") {
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+  }
+
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const imgData = canvas.toDataURL("image/jpeg", 0.8);
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("გთხოვთ, გაიაროთ ავტორიზაცია");
+    return;
+  }
+
+  try {
+    await setDoc(doc(db, "photos", user.uid), {
+      uid: user.uid,
+      email: user.email,
+      photo: imgData,
+      text: photoText.value.trim(),
+      timestamp: serverTimestamp()
+    });
     photoText.value = "";
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        authSection.classList.add("hidden");
-        userActions.classList.remove("hidden");
-        photoFeed.classList.remove("hidden");
-      } else {
-        authSection.classList.remove("hidden");
-        userActions.classList.add("hidden");
-        photoFeed.classList.add("hidden");
-      }
-    });
+    // გადამისამართება მთავარ გვერდზე
+    window.location.href = "/"; // შეცვალე საჭირო URL-ზე
+
+  } catch (e) {
+    alert("ატვირთვის შეცდომა: " + e.message);
   }
+});
 
-  switchBtn.onclick = () => {
-    currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
-    startCamera();
-  };
-
-  closeCamera.onclick = stopCamera;
-
-  snap.onclick = async () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
-
-    if (currentFacingMode === "user") {
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-    }
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imgData = canvas.toDataURL("image/jpeg", 0.8);
-    const user = auth.currentUser;
-
-    if (!user) {
-      alert("გთხოვთ, გაიაროთ ავტორიზაცია");
-      return;
-    }
-
-    try {
-      await setDoc(doc(db, "photos", user.uid), {
-        uid: user.uid,
-        email: user.email,
-        photo: imgData,
-        text: photoText.value || "",
-        timestamp: new Date(),
-      });
-      stopCamera();
-    } catch (e) {
-      alert("სურათის ატვირთვა ვერ მოხერხდა: " + e.message);
-    }
-  };
-
-  register.onclick = () => {
-    if (!email.value || !password.value) {
-      alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
-      return;
-    }
-    createUserWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
-      alert(e.message)
-    );
-  };
-
-  login.onclick = () => {
-    if (!email.value || !password.value) {
-      alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
-      return;
-    }
-    signInWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
-      alert(e.message)
-    );
-  };
-
-  logout.onclick = () => signOut(auth);
-
-  openCamera.onclick = () => startCamera();
-
-  function renderFeed() {
-    const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
-    onSnapshot(q, (snapshot) => {
-      photoFeed.innerHTML = "";
-      snapshot.forEach((doc) => {
-        const d = doc.data();
-        const timeStamp = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
-
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <img src="${d.photo}" alt="photo" />
-          ${d.text ? `<p>${d.text}</p>` : ""} <div class="meta">${d.email} | ${timeStamp.toLocaleString()}</div>
-        `;
-        photoFeed.appendChild(div);
-      });
-    });
+// რეგისტრაცია
+registerBtn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  if (!email || !password) {
+    alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
+    return;
   }
+  createUserWithEmailAndPassword(auth, email, password).catch(e => alert("რეგისტრაციის შეცდომა: " + e.message));
+});
 
-  // ნავიგაცია, ბურგერი, მოდალი და გასვლა ერთიანად
-  (function() {
-    const burgerBtn = document.getElementById('burgerBtn');
-    const navMenu = document.getElementById('navMenu');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modal = modalOverlay.querySelector('.modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
+// შესვლა
+loginBtn.addEventListener("click", () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  if (!email || !password) {
+    alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
+    return;
+  }
+  signInWithEmailAndPassword(auth, email, password).catch(e => alert("შესვლის შეცდომა: " + e.message));
+});
 
-    burgerBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
+// გასვლა
+logoutBtn.addEventListener("click", () => {
+  signOut(auth).catch(e => alert("გასვლის შეცდომა: " + e.message));
+});
+
+// ავტორიზაციის მდგომარეობის კონტროლი
+onAuthStateChanged(auth, user => {
+  if (user) {
+    authSection.classList.add("hidden");
+    userActions.classList.remove("hidden");
+    photoFeed.classList.remove("hidden");
+    renderPhotoFeed();
+  } else {
+    authSection.classList.remove("hidden");
+    userActions.classList.add("hidden");
+    photoFeed.classList.add("hidden");
+    stopCamera();
+    photoFeed.innerHTML = "";
+  }
+});
+
+// ფოტოების ჩვენება (მხოლოდ ერთი ფოტო თითო მომხმარებელზე)
+function renderPhotoFeed() {
+  const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
+  onSnapshot(q, snapshot => {
+    photoFeed.innerHTML = "";
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const date = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${d.photo}" alt="ფოტო" />
+        <p>${d.text || ""}</p>
+        <small>${d.email} | ${date.toLocaleString()}</small>
+      `;
+      photoFeed.appendChild(card);
     });
-
-    navMenu.querySelectorAll('a').forEach(link => {
-      if (link.id !== 'logoutBtn') {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          const title = link.getAttribute('data-title');
-          const content = link.getAttribute('data-content');
-          openModal(title, content);
-          navMenu.classList.remove('active');
-        });
-      }
-    });
-
-    logoutBtn.addEventListener('click', e => {
-      e.preventDefault();
-      navMenu.classList.remove('active');
-      signOut(auth).catch(e => alert("გასვლის შეცდომა: " + e.message));
-    });
-
-    window.openModal = function(title, content) {
-      modalTitle.innerHTML = title;
-      modalContent.innerHTML = content;
-      modalOverlay.classList.add('show');
-      modal.style.animation = 'modalIn 0.3s ease forwards';
-      modalOverlay.focus();
-    };
-
-    window.closeModal = function() {
-      modal.style.animation = 'modalOut 0.3s ease forwards';
-      setTimeout(() => {
-        modalOverlay.classList.remove('show');
-        modal.style.animation = '';
-      }, 300);
-    };
-
-    closeModalBtn.addEventListener('click', closeModal);
-
-    modalOverlay.addEventListener('click', e => {
-      if (e.target === modalOverlay) closeModal();
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
-        closeModal();
-      }
-    });
-  })();
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      authSection.classList.add("hidden");
-      userActions.classList.remove("hidden");
-      photoFeed.classList.remove("hidden");
-      renderFeed();
-    } else {
-      authSection.classList.remove("hidden");
-      userActions.classList.add("hidden");
-      photoFeed.classList.add("hidden");
-      stopCamera();
-      photoFeed.innerHTML = "";
-    }
   });
+}
+
+// UI მართვა
+openCameraBtn.addEventListener("click", () => startCamera());
+closeCameraBtn.addEventListener("click", () => stopCamera());
+
 </script>
 
 </body>
