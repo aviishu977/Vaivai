@@ -56,7 +56,7 @@
 *::after {
   box-sizing: border-box;
   font-family: 'myffont';
-  line-height: 1.5;
+  line-height: 1;
 }
 
 body {
@@ -83,7 +83,6 @@ body {
   vertical-align: middle;
   font-size: 1.75rem;
   color: var(--color-white);
-  transition: color 0.3s ease;
 }
 
 /* Header */
@@ -98,7 +97,7 @@ header {
   justify-content: center;
   align-items: center;
   gap: 0.75rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-white);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -107,7 +106,7 @@ header {
 }
 
 /* Hover effect for icons in header */
-header .material-symbols-rounded:hover {
+header :hover {
   color: #bbb;
   cursor: default;
 }
@@ -125,7 +124,7 @@ main {
 input,
 textarea {
   width: 100%;
-  padding: 10px var(--spacing-unit);
+  padding: 15px var(--spacing-unit);
   margin-bottom: var(--spacing-unit);
   font-size: 1.05rem;
   border-radius: var(--border-radius-md);
@@ -187,41 +186,32 @@ button:hover {
   box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
 
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-}
 
 /* Specific Buttons */
 #switchCameraBtn {
+  width: 80%;
   background: transparent;
   border: 1.5px solid var(--color-white);
-  width: auto;
   flex-shrink: 0;
   height: var(--button-height);
   padding: 0 1.5rem;
   color: var(--color-white);
 }
-
-#switchCameraBtn:hover {
+#switchCameraBtn:hover{
   background: var(--color-white);
-  color: var(--color-bg);
+  color: black;
 }
 
-#logout {
-  background: transparent;
-  border: 1.5px solid var(--color-text-muted);
-  color: var(--color-text-muted);
-  width: auto;
-  padding: 0 1.25rem;
-  font-weight: 400;
-  transition: all 0.3s ease;
+#logoutBtn {
+  color: var(--color-error, #FF5555);
+  font-weight: 700;
+  transition: color 0.3s ease;
 }
 
-#logout:hover {
-  background: var(--color-text-muted);
-  color: var(--color-bg);
-  border-color: var(--color-text-muted);
+#logoutBtn:hover,
+#logoutBtn:focus {
+  color: #FF8888;
+  outline: none;
 }
 
 /* Spacing for snap button */
@@ -242,7 +232,9 @@ button:active {
 .hidden {
   display: none !important;
 }
-
+#logout{
+  display: none;
+}
 /* Video & Image */
 video,
 img {
@@ -252,7 +244,7 @@ img {
   background: #000;
   object-fit: cover;
   display: block;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0px rgba(255, 255, 255, 0.15);
   transition: box-shadow 0.3s ease;
 }
 
@@ -358,9 +350,9 @@ video.mirror {
 
 #closeCamera {
   background-color: var(--color-card-bg);
-  border: 1.5px solid var(--color-text-muted);
+  border: 1.5px solid var(--color-white);
   border-radius: var(--border-radius-md);
-  color: var(--color-text-main);
+  color: var(--color-white);
   height: var(--button-height);
   width: var(--button-height);
   min-width: var(--button-height);
@@ -373,9 +365,9 @@ video.mirror {
   cursor: pointer;
 }
 
-#closeCamera .material-symbols-rounded {
+#closeCamera  {
   font-size: 1.8rem;
-  color: var(--color-text-muted);
+  color: var(--color-white);
   transition: color 0.3s ease;
 }
 
@@ -384,7 +376,7 @@ video.mirror {
   color: var(--color-bg);
 }
 
-#closeCamera:hover .material-symbols-rounded {
+#closeCamera:hover{
   color: var(--color-bg);
 }
 
@@ -401,7 +393,7 @@ video.mirror {
 }
 
 /* Button icon pulse on hover */
-button .material-symbols-rounded {
+button {
   transition: transform 0.3s ease;
 }
 
@@ -447,10 +439,245 @@ button:hover .material-symbols-rounded {
 #login{
   margin-top: 10px;
 }
+/* ძირითადი ფერები და სტილი */
+:root {
+  --color-bg: #000000;
+  --color-white: #FFFFFF;
+  --color-text-main: #E0E0E0;
+  --color-text-muted: #AAAAAA;
+  --color-card-bg: #121212;
+  --color-border: #333333;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* ბურგერი */
+.burger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1001;
+}
+.burger span {
+  height: 4px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* ნავიგაცია */
+.nav {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 240px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(15px);
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  border-right:4px solid var(--color-white);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+}
+.nav.active {
+  left: 0;
+}
+.nav a {
+  padding: 15px 25px;
+  text-decoration: none;
+  font-size: 16px;
+  color: var(--color-text-main);
+  transition: background 0.2s;
+  
+  width: 90%;
+  
+  
+}
+.nav a:hover,
+.nav a:focus {
+  background: #1a1a1a;
+  outline: none;
+}
+
+/* მოდალი */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal-overlay.show {
+  display: flex;
+}
+.modal {
+  position: relative;
+  background: rgba(0, 0, 0, 0.74);
+  backdrop-filter: blur(20px);
+  padding: 25px 25px 25px 25px; /* ყველა მხრიდან თანაბარი პადინგი */
+  border: 2px solid var(--color-white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 6px 15px rgba(255,255,255,0.1);
+  color: var(--color-text-main, #E0E0E0);
+  opacity: 0;
+  transform: scale(0.95);
+  animation-fill-mode: forwards;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+/* დახურვის ღილაკი */
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 12px; /* ცოტა ახლოს მოიტანეთ */
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--color-text-muted, #AAAAAA);
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  border: none;
+  transition: color 0.2s, background-color 0.2s;
+  padding: 0;
+  user-select: none;
+}
+.close-modal:hover,
+.close-modal:focus {
+  color: var(--color-white, #FFFFFF);
+  background: rgba(255,255,255,0.25);
+  outline: none;
+}
+
+/* სათაურის და ტექსტის პადინგი */
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 20px;
+  word-break: break-word;
+}
+.modal p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  word-break: break-word;
+}
+
+@keyframes modalIn {
+  from {opacity: 0; transform: scale(0.95);}
+  to {opacity: 1; transform: scale(1);}
+}
+@keyframes modalOut {
+  from {opacity: 1; transform: scale(1);}
+  to {opacity: 0; transform: scale(0.95);}
+}
+
+/* მედიაკვერი დესკტოპისთვის */
+@media (min-width: 768px) {
+  .burger {
+    display: none;
+  }
+  .nav {
+    position: relative;
+    left: 0;
+    flex-direction: row;
+    height: auto;
+    padding: 0;
+    box-shadow: none;
+    justify-content: center;
+  }
+  .nav a {
+    padding: 15px 20px;
+  }
+}
+.modal a{
+  color: #FF5555;
+}
   </style>
 </head>
 <body>
-  <header>პოლაროიდი</header>
+  <!-- ბურგერი -->
+<div class="burger" id="burgerBtn" aria-label="მენიუს გახსნა" role="button" tabindex="0">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<nav class="nav" id="navMenu" aria-label="მთავარი ნავიგაცია">
+  <a href="#" data-title="წესები" data-content="
+    <ul>
+      <li>იყავით პატივისცემით და მეგობრულად სხვა მომხმარებლების მიმართ.</li>
+      <li>არ ატვირთოთ შეურაცხმყოფელი, ძალადობრივი ან არაკორექტული კონტენტი.</li>
+      <li>დაიცავით ავტორთა უფლებები და არ გამოიყენოთ სხვა ადამიანების ფოტოები მათი თანხმობის გარეშე.</li>
+      <li>არ გამოიყენოთ საიტი სპამის, რეკლამირების ან სხვა არასასურველი მიზნებისთვის.</li>
+      <li>დაიცავით პირადი მონაცემების კონფიდენციალობა და არ გააზიაროთ სხვისი პირადი ინფორმაცია.</li>
+      <li>ადმინისტრაცია უფლებას იტოვებს წაშალოს ნებისმიერი კონტენტი, რომელიც არღვევს წესებს.</li>
+    </ul>
+  ">წესები</a>
+
+  <a href="#" data-title="ინსტრუქცია" data-content="
+    <ol>
+      <li>გაიარეთ რეგისტრაცია ან შედით სისტემაში ელ. ფოსტის და პაროლის გამოყენებით.</li>
+      <li>დააჭირეთ ღილაკს „გადაღება“, რათა ჩართოთ კამერა.</li>
+      <li>გაიღეთ სელფი ან ფოტო პირდაპირ ბრაუზერიდან.</li>
+      <li>სურვილის შემთხვევაში, დაამატეთ ტექსტი ფოტოს აღწერისთვის.</li>
+      <li>დააჭირეთ „ატვირთვას“, რათა ფოტო აიტვირთოს და გააიზიაროთ.</li>
+      <li>ნახეთ სხვა მომხმარებლების მიერ ატვირთული მთავარ გვერდზე.</li>
+    </ol>
+  ">ინსტრუქცია</a>
+
+  <a href="#" data-title="დახმარება" data-content="
+    <p>დაგვიკავშირდით:</p>
+    <ul>
+      <li>ელ. ფოსტა: <a href='mailto:support@geoapp.ge'>support@geoapp.ge</a></li><br>
+      <li>Telegram: <a href='https://t.me/geoapp_support' target='_blank' rel='noopener'>@geoapp_support</a></li>
+    </ul>
+  ">დახმარება</a>
+
+  <a href="#" data-title="პირობები" data-content="
+    <p>საიტი უზრუნველყოფს ფოტოების გადაღებისა და გაზიარების სერვისს მხოლოდ პირადი, არაკომერციული გამოყენებისთვის.</p>
+    <p>მომხმარებელი პასუხისმგებელია ატვირთული კონტენტზე და ავტორთა უფლებების დაცვაზე.</p>
+    <p>ადმინისტრაცია არ იღებს პასუხისმგებლობას მომხმარებლის მიერ ატვირთული ფოტოების შინაარსზე.</p>
+    <p>პირადი მონაცემები ინახება კონფიდენციალურად.</p>
+    <p>ადმინისტრაციას აქვს უფლება შეცვალოს საიტის ფუნქციონალი და წესები წინასწარი შეტყობინების გარეშე.</p>
+    <p>საიტის გამოყენებით, მომხმარებელი ეთანხმება ამ პირობებს და ვალდებულია მათი დაცვის.</p>
+  ">პირობები</a>
+
+  <a href="#" id="logoutBtn" style="color: #FF5555; font-weight: 700;">გასვლა</a>
+</nav>
+
+
+<!-- მოდალი -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalContent" tabindex="-1">
+  <div class="modal">
+    <button class="close-modal" id="closeModalBtn" aria-label="მოდალის დახურვა">&times;</button>
+    <h2 id="modalTitle">სათაური</h2>
+    <p id="modalContent">ტექსტი</p>
+  </div>
+</div>
+
+  <header>
+    F R A M E K A</header>
   <main>
     <div id="authSection">
       <input id="email" placeholder="ელ. ფოსტა" type="email" autocomplete="email" />
@@ -491,248 +718,259 @@ button:hover .material-symbols-rounded {
     <div id="photoFeed"></div>
   </main>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      collection,
-      onSnapshot,
-      query,
-      orderBy,
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    collection,
+    onSnapshot,
+    query,
+    orderBy,
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-    // Firebase Configuration - REPLACE WITH YOUR ACTUAL FIREBASE CONFIG
-    const firebaseConfig = {
-      apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI", // <--- REPLACE THIS
-      authDomain: "photog-457a1.firebaseapp.com", // <--- REPLACE THIS
-      projectId: "photog-457a1", // <--- REPLACE THIS
-      storageBucket: "photog-457a1.appspot.com", // <--- REPLACE THIS
-      messagingSenderId: "568507243860", // <--- REPLACE THIS
-      appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1", // <--- REPLACE THIS
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+    authDomain: "photog-457a1.firebaseapp.com",
+    projectId: "photog-457a1",
+    storageBucket: "photog-457a1.appspot.com",
+    messagingSenderId: "568507243860",
+    appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1",
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    // Get DOM Elements
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const register = document.getElementById("register");
-    const login = document.getElementById("login");
-    const logout = document.getElementById("logout");
-    const openCamera = document.getElementById("openCamera");
-    const snap = document.getElementById("snap");
-    const switchBtn = document.getElementById("switchCameraBtn");
-    const video = document.getElementById("video");
-    const photoText = document.getElementById("photoText");
-    const photoFeed = document.getElementById("photoFeed");
-    const cameraSection = document.getElementById("cameraSection");
-    const userActions = document.getElementById("userActions");
-    const authSection = document.getElementById("authSection");
-    const closeCamera = document.getElementById("closeCamera");
+  // DOM ელემენტები
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const register = document.getElementById("register");
+  const login = document.getElementById("login");
+  const logout = document.getElementById("logout");
+  const openCamera = document.getElementById("openCamera");
+  const snap = document.getElementById("snap");
+  const switchBtn = document.getElementById("switchCameraBtn");
+  const video = document.getElementById("video");
+  const photoText = document.getElementById("photoText");
+  const photoFeed = document.getElementById("photoFeed");
+  const cameraSection = document.getElementById("cameraSection");
+  const userActions = document.getElementById("userActions");
+  const authSection = document.getElementById("authSection");
+  const closeCamera = document.getElementById("closeCamera");
 
-    let stream; // To hold the camera stream
-    let currentFacingMode = "user"; // Default to front camera
+  let stream;
+  let currentFacingMode = "user";
 
-    /**
-     * Starts the camera and displays the video feed.
-     * Handles camera permissions and mirrors the user-facing camera.
-     */
-    async function startCamera() {
-      // Stop any existing camera stream
-      if (stream) stream.getTracks().forEach((track) => track.stop());
-      try {
-        // Request camera access
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: currentFacingMode },
-        });
-        video.srcObject = stream; // Set video source to the stream
-
-        // Show camera section and hide others
-        cameraSection.classList.remove("hidden");
-        authSection.classList.add("hidden");
-        userActions.classList.add("hidden");
-        photoFeed.classList.add("hidden");
-
-        // Mirror the video horizontally for user-facing camera
-        video.classList.toggle("mirror", currentFacingMode === "user");
-      } catch (err) {
-        alert("კამერის ჩართვა ვერ მოხერხდა: " + err.message);
-      }
-    }
-
-    /**
-     * Stops the camera stream and hides the camera section.
-     * Resets the photo text input.
-     */
-    function stopCamera() {
-      cameraSection.classList.add("hidden");
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-        stream = null; // Clear the stream reference
-      }
-      photoText.value = ""; // Clear any text in the input field
-
-      // Re-evaluate and show other sections based on authentication state
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          authSection.classList.add("hidden");
-          userActions.classList.remove("hidden");
-          photoFeed.classList.remove("hidden");
-        } else {
-          authSection.classList.remove("hidden");
-          userActions.classList.add("hidden");
-          photoFeed.classList.add("hidden");
-        }
+  async function startCamera() {
+    if (stream) stream.getTracks().forEach((track) => track.stop());
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: currentFacingMode },
       });
+      video.srcObject = stream;
+
+      cameraSection.classList.remove("hidden");
+      authSection.classList.add("hidden");
+      userActions.classList.add("hidden");
+      photoFeed.classList.add("hidden");
+
+      video.classList.toggle("mirror", currentFacingMode === "user");
+    } catch (err) {
+      alert("კამერის ჩართვა ვერ მოხერხდა: " + err.message);
     }
+  }
 
-    /**
-     * Switches between front and rear cameras.
-     */
-    switchBtn.onclick = () => {
-      currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
-      startCamera(); // Restart camera with new facing mode
-    };
-
-    /**
-     * Handles closing the camera view.
-     */
-    closeCamera.onclick = stopCamera;
-
-    /**
-     * Captures a photo from the video stream, converts it to a data URL,
-     * and uploads it to Firestore along with the user's text.
-     */
-    snap.onclick = async () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-
-      // Apply mirroring transformation for user-facing camera before drawing
-      if (currentFacingMode === "user") {
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
-      }
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height); // Draw video frame onto canvas
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Get image data as JPEG (0.8 quality)
-      const user = auth.currentUser;
-
-      if (!user) {
-        alert("გთხოვთ, გაიაროთ ავტორიზაცია");
-        return;
-      }
-
-      try {
-        // Save photo data to Firestore, using user's UID as document ID
-        await setDoc(doc(db, "photos", user.uid), {
-          uid: user.uid,
-          email: user.email,
-          photo: imgData,
-          text: photoText.value || "", // Use empty string if no text
-          timestamp: new Date(), // Current timestamp
-        });
-        stopCamera(); // Stop camera after snapping
-      } catch (e) {
-        alert("სურათის ატვირთვა ვერ მოხერხდა: " + e.message);
-      }
-    };
-
-    /**
-     * Handles user registration with email and password.
-     */
-    register.onclick = () => {
-      if (!email.value || !password.value) {
-        alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
-        return;
-      }
-      createUserWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
-        alert(e.message)
-      );
-    };
-
-    /**
-     * Handles user login with email and password.
-     */
-    login.onclick = () => {
-      if (!email.value || !password.value) {
-        alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
-        return;
-      }
-      signInWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
-        alert(e.message)
-      );
-    };
-
-    /**
-     * Handles user logout.
-     */
-    logout.onclick = () => signOut(auth);
-
-    /**
-     * Handles opening the camera from the main screen.
-     */
-    openCamera.onclick = () => startCamera();
-
-    /**
-     * Fetches and renders photos from Firestore in real-time.
-     */
-    function renderFeed() {
-      // Query photos collection, ordered by timestamp in descending order
-      const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
-      
-      // Listen for real-time updates
-      onSnapshot(q, (snapshot) => {
-        photoFeed.innerHTML = ""; // Clear existing feed content
-        snapshot.forEach((doc) => {
-          const d = doc.data();
-          const timeStamp = d.timestamp?.toDate ? d.timestamp.toDate() : new Date(); // Convert Firebase timestamp
-          
-          const div = document.createElement("div");
-          div.className = "card"; // Apply card styling
-          div.innerHTML = `
-            <img src="${d.photo}" alt="photo" />
-            ${d.text ? `<p>${d.text}</p>` : ""} <div class="meta">${d.email} | ${timeStamp.toLocaleString()}</div>
-          `;
-          photoFeed.appendChild(div); // Add card to the feed
-        });
-      });
+  function stopCamera() {
+    cameraSection.classList.add("hidden");
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      stream = null;
     }
+    photoText.value = "";
 
-    /**
-     * Handles authentication state changes.
-     * Shows/hides sections based on whether a user is logged in.
-     */
     onAuthStateChanged(auth, (user) => {
-      const loggedIn = !!user; // Check if user object exists
-
-      if (loggedIn) {
-        // User is logged in: hide auth, show user actions and feed
+      if (user) {
         authSection.classList.add("hidden");
         userActions.classList.remove("hidden");
         photoFeed.classList.remove("hidden");
-        renderFeed(); // Start rendering photo feed
       } else {
-        // User is logged out: show auth, hide user actions and feed
         authSection.classList.remove("hidden");
         userActions.classList.add("hidden");
         photoFeed.classList.add("hidden");
-        stopCamera(); // Ensure camera is off if user logs out
-        photoFeed.innerHTML = ""; // Clear photo feed on logout
       }
     });
-  </script>
+  }
+
+  switchBtn.onclick = () => {
+    currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+    startCamera();
+  };
+
+  closeCamera.onclick = stopCamera;
+
+  snap.onclick = async () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+
+    if (currentFacingMode === "user") {
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+    }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.8);
+    const user = auth.currentUser;
+
+    if (!user) {
+      alert("გთხოვთ, გაიაროთ ავტორიზაცია");
+      return;
+    }
+
+    try {
+      await setDoc(doc(db, "photos", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        photo: imgData,
+        text: photoText.value || "",
+        timestamp: new Date(),
+      });
+      stopCamera();
+    } catch (e) {
+      alert("სურათის ატვირთვა ვერ მოხერხდა: " + e.message);
+    }
+  };
+
+  register.onclick = () => {
+    if (!email.value || !password.value) {
+      alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
+      return;
+    }
+    createUserWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
+      alert(e.message)
+    );
+  };
+
+  login.onclick = () => {
+    if (!email.value || !password.value) {
+      alert("გთხოვთ, შეიყვანეთ ელ. ფოსტა და პაროლი");
+      return;
+    }
+    signInWithEmailAndPassword(auth, email.value, password.value).catch((e) =>
+      alert(e.message)
+    );
+  };
+
+  logout.onclick = () => signOut(auth);
+
+  openCamera.onclick = () => startCamera();
+
+  function renderFeed() {
+    const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+      photoFeed.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const d = doc.data();
+        const timeStamp = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <img src="${d.photo}" alt="photo" />
+          ${d.text ? `<p>${d.text}</p>` : ""} <div class="meta">${d.email} | ${timeStamp.toLocaleString()}</div>
+        `;
+        photoFeed.appendChild(div);
+      });
+    });
+  }
+
+  // ნავიგაცია, ბურგერი, მოდალი და გასვლა ერთიანად
+  (function() {
+    const burgerBtn = document.getElementById('burgerBtn');
+    const navMenu = document.getElementById('navMenu');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modal = modalOverlay.querySelector('.modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalContent = document.getElementById('modalContent');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    burgerBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      if (link.id !== 'logoutBtn') {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const title = link.getAttribute('data-title');
+          const content = link.getAttribute('data-content');
+          openModal(title, content);
+          navMenu.classList.remove('active');
+        });
+      }
+    });
+
+    logoutBtn.addEventListener('click', e => {
+      e.preventDefault();
+      navMenu.classList.remove('active');
+      signOut(auth).catch(e => alert("გასვლის შეცდომა: " + e.message));
+    });
+
+    window.openModal = function(title, content) {
+      modalTitle.innerHTML = title;
+      modalContent.innerHTML = content;
+      modalOverlay.classList.add('show');
+      modal.style.animation = 'modalIn 0.3s ease forwards';
+      modalOverlay.focus();
+    };
+
+    window.closeModal = function() {
+      modal.style.animation = 'modalOut 0.3s ease forwards';
+      setTimeout(() => {
+        modalOverlay.classList.remove('show');
+        modal.style.animation = '';
+      }, 300);
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    modalOverlay.addEventListener('click', e => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+        closeModal();
+      }
+    });
+  })();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      authSection.classList.add("hidden");
+      userActions.classList.remove("hidden");
+      photoFeed.classList.remove("hidden");
+      renderFeed();
+    } else {
+      authSection.classList.remove("hidden");
+      userActions.classList.add("hidden");
+      photoFeed.classList.add("hidden");
+      stopCamera();
+      photoFeed.innerHTML = "";
+    }
+  });
+</script>
+
 </body>
 </html>
