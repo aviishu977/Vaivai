@@ -255,4 +255,3 @@ function renderPhotoFeed() {
 
 // UI მართვა
 openCameraBtn.addEventListener("click", () => startCamera());
-closeCameraBtn.addEventListener("click", () => stopCamera());
