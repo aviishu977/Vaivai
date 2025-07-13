@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+<title>Finone ჩატი</title>
+<style>
+  :root {
+    --color-bg: #000000;
+    --color-white: #FFFFFF;
+    --color-text-main: #E0E0E0;
+    --color-text-muted: #AAAAAA;
+    --color-card-bg: #121212;
+    --color-border: #333333;
+    --color-error: #FF5555;
+    --border-radius-lg: 16px;
+    --border-radius-md: 12px;
+    --spacing-unit: 16px;
+    --max-content-width: 500px;
+    --button-height: 52px;
+    --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1);
+  }
+  @font-face {
+    font-family: 'myffont';
+    src: url('alk-sanet.ttf');
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    font-family: 'myffont';
+    line-height: 1;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: var(--color-bg);
+    color: var(--color-white);
+    padding: var(--spacing-unit);
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    border-bottom: 1px solid var(--color-white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+  }
+  #messagesContainer {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .message {
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    background: var(--color-card-bg);
+    padding: 12px 16px;
+    position: relative;
+  }
+  .message .email {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 4px;
+  }
+  .message .time {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+  }
+  .message .text {
+    font-size: 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .message .replyingTo {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    border-left: 3px solid var(--color-white);
+    padding-left: 8px;
+    margin-bottom: 8px;
+    font-style: italic;
+    width:80%;
+  }
+  .reply-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+  }
+  .reply-btn:hover {
+    color: var(--color-white);
+  }
+  #inputArea {
+    border-top: 1.5px solid var(--color-border);
+    padding: 12px 0;
+    display: flex;
+    gap: 12px;
+    position: fixed;
+    bottom: 0;
+    background: black;
+    width: 100%;
+  }
+  #chatInput {
+    flex-grow: 1;
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--color-white);
+    background: #000;
+    color: var(--color-white);
+    font-size: 1rem;
+    padding: 10px 10px;
+    resize: none;
+    min-height: var(--button-height);
+    outline: none;
+    width: 100%;
+  }
+  #chatInput::placeholder {
+    color: var(--color-text-muted);
+  }
+  #sendMessage {
+    background: transparent;
+    border: 1.5px solid var(--color-white);
+    border-radius: var(--border-radius-md);
+    color: var(--color-white);
+    font-size: 1.2rem;
+    font-weight: 600;
+    width: 120px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  #sendMessage .material-symbols-rounded {
+    font-size: 1.5rem;
+  }
+  /* Scrollbar */
+  #messagesContainer::-webkit-scrollbar {
+    width: 8px;
+  }
+  #messagesContainer::-webkit-scrollbar-track {
+    background: #111;
+  }
+  #messagesContainer::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+  }
+  #messagesContainer::-webkit-scrollbar-thumb:hover {
+    background: #666;
+  }
+  .material-symbols-rounded {
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    font-size: 2rem;
+    vertical-align: middle;
+    color: white;
+  }
+  .chat{
+  width: 50px;
+  height: 50px;
+  position:fixed;
+  z-index: 9999999;
+  left: 5px;
+  top: 5px;
+  background: black;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+</style>
+</head>
+<body>
+    <a href="index.html"><button class="chat">            <span class="material-symbols-rounded">close</span></button></a>
+<header>⟡ FNΞ chat ⟡
+</header>
+<main>
+  <div id="messagesContainer" aria-live="polite" aria-relevant="additions"></div>
+<br><br><br><br><br>
+  <div id="inputArea" aria-label="ჩატის ტექსტის შეყვანა და გაგზავნა">
+    <textarea id="chatInput" placeholder="შეიყვანე შეტყობინება..." rows="1" aria-label="ჩატში შეტყობინების დაწერა"></textarea>
+    <button id="sendMessage" aria-label="შეტყობინების გაგზავნა">
+      <span class="material-symbols-rounded">send</span>
+    </button>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+    authDomain: "photog-457a1.firebaseapp.com",
+    projectId: "photog-457a1",
+    databaseURL: "https://photog-457a1-default-rtdb.europe-west1.firebasedatabase.app",
+    storageBucket: "photog-457a1.appspot.com",
+    messagingSenderId: "568507243860",
+    appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
+
+  const messagesContainer = document.getElementById("messagesContainer");
+  const chatInput = document.getElementById("chatInput");
+  const sendMessageBtn = document.getElementById("sendMessage");
+
+  let currentUser = null;
+  let replyingTo = null;
+
+  function getRelativeTime(timestamp) {
+    const now = Date.now();
+    const diffSeconds = Math.floor((now - timestamp) / 1000);
+    if (diffSeconds < 60) return "ახლახანს";
+    if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} წუთის წინ`;
+    if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)} საათის წინ`;
+    if (diffSeconds < 604800) return `${Math.floor(diffSeconds / 86400)} დღის წინ`;
+    return new Date(timestamp).toLocaleDateString("ka-GE");
+  }
+
+  function renderMessage(msg, key) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+
+    // თუ არის პასუხი, ვაჩვენებთ "პასუხი: [ელფოსტა]" და ტექსტს
+    if (msg.replyToText) {
+      const replyingDiv = document.createElement("div");
+      replyingDiv.classList.add("replyingTo");
+      const replyToUser = msg.replyToEmail || "უცნობი";
+      replyingDiv.textContent = `პასუხი ${replyToUser}: ${msg.replyToText}`;
+      div.appendChild(replyingDiv);
+    }
+
+    const emailDiv = document.createElement("div");
+    emailDiv.classList.add("email");
+    emailDiv.textContent = msg.email || "უცნობი";
+
+    const timeDiv = document.createElement("div");
+    timeDiv.classList.add("time");
+    timeDiv.textContent = getRelativeTime(msg.timestamp);
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("text");
+    textDiv.textContent = msg.text;
+
+    // ღილაკი პასუხის მისაცემად
+    const replyBtn = document.createElement("button");
+    replyBtn.classList.add("reply-btn");
+    replyBtn.textContent = "პასუხი";
+    replyBtn.addEventListener("click", () => {
+      replyingTo = {
+        key,
+        text: msg.text,
+        email: msg.email || "უცნობი"
+      };
+      chatInput.value = `@${replyingTo.email}: ${replyingTo.text}\n`;
+      chatInput.focus();
+    });
+
+    div.appendChild(emailDiv);
+    div.appendChild(timeDiv);
+    div.appendChild(textDiv);
+    div.appendChild(replyBtn);
+
+    return div;
+  }
+
+  function listenForMessages() {
+    onChildAdded(messagesRef, snapshot => {
+      const msg = snapshot.val();
+      if (!msg) return;
+
+      const messageElement = renderMessage(msg, snapshot.key);
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+  }
+
+  sendMessageBtn.addEventListener("click", async () => {
+    let text = chatInput.value.trim();
+    if (!text || !currentUser) return;
+
+    let replyToText = null;
+    let replyToEmail = null;
+    if (replyingTo) {
+      const lines = text.split('\n');
+      if (lines.length > 1 && lines[0].startsWith(`@${replyingTo.email}:`)) {
+        replyToText = replyingTo.text;
+        replyToEmail = replyingTo.email;
+        lines.shift();
+        text = lines.join('\n').trim();
+      }
+      replyingTo = null;
+    }
+
+    if (!text) return;
+
+    try {
+      await push(messagesRef, {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        timestamp: Date.now(),
+        replyToText,
+        replyToEmail
+      });
+      chatInput.value = "";
+      chatInput.focus();
+    } catch (e) {
+      alert("შეტყობინების გაგზავნის შეცდომა: " + e.message);
+    }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      alert("გთხოვთ შეხვიდეთ Finone-ზე ანგარიშით");
+      window.location.href = "/";
+    } else {
+      currentUser = user;
+      listenForMessages();
+    }
+  });
+
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessageBtn.click();
+    }
+  });
+</script>
+</body>
+</html>
