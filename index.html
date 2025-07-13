@@ -13,7 +13,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="FINONE – გადაიღე სელფი და გაუზიარე საზოგადოებას." />
+  <meta property="og:title" content="FINONE – გადაიღე სელფი პირდაპირ საიტიდან" />
   <meta property="og:description" content="სელფის გადაღება, ატვირთვა და გაზიარება – პირდაპირ ბრაუზერიდან. ქართული ონლაინ პლატფორმა სწრაფი ფოტოსაზიარებლად." />
   <meta property="og:image" content="https://i.postimg.cc/bJr4Sz02/Picsart-25-07-12-03-10-36-438.jpg" />
   <meta property="og:url" content="https://finone.vercel.app/" />
@@ -122,15 +122,14 @@
 
     <div id="cameraSection" class="hidden">
       <div class="camera-top-bar">
-        <button id="closeCamera">
+       <button onclick="location.reload()" id="closeCamera">
             <span class="material-symbols-rounded">close</span>
         </button>
         <button id="switchCameraBtn">
           <span class="material-symbols-rounded">switch_camera</span> კამერის გადართვა
         </button>
       </div>
-      <video id="video" autoplay playsinline></video>
-      <select id="filterSelect">
+            <select id="filterSelect">
         <option value="none">None</option>
         <option value="grayscale(100%)">Grayscale</option>
         <option value="sepia(60%)">Sepia</option>
@@ -152,6 +151,7 @@
         <option value="drop-shadow(5px 5px 5px rgba(0,0,0,0.5))">Strong Drop Shadow</option>
       </select>
 
+      <video id="video" autoplay playsinline></video>
       <textarea id="photoText" placeholder="ტექსტი ფოტოსთვის (სურვილისამებრ)"></textarea>
       <button id="snap">
         <span class="material-symbols-rounded">upload</span>
