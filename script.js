@@ -4,8 +4,6 @@ import {
   doc,
   setDoc,
   collection,
-  query,
-  orderBy,
   onSnapshot,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -141,7 +139,7 @@ switchCameraBtn.addEventListener("click", () => {
   startCamera();
 });
 
-// გადაღება და ატვირთვა (არ ხდება გვერდის გადატვირთვა)
+// გადაღება და ატვირთვა (მხოლოდ ბოლო ფოტო თითო მომხმარებლისთვის)
 snapBtn.addEventListener("click", async () => {
   if (!stream) {
     alert("გთხოვთ, ჩართოთ კამერა");
@@ -168,6 +166,7 @@ snapBtn.addEventListener("click", async () => {
     return;
   }
   try {
+    // თითო მომხმარებლისთვის მხოლოდ ერთი ფოტო:
     await setDoc(doc(db, "photos", user.uid), {
       uid: user.uid,
       email: user.email,
@@ -233,10 +232,22 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// ფოტოების ჩვენება
+// "რამდენი ხნის წინ" ტექსტი
+function getRelativeTime(date) {
+  const now = new Date();
+  const diff = Math.floor((now - date) / 1000); // წამებში
+
+  if (diff < 60) return "ახლახანს";
+  if (diff < 3600) return `${Math.floor(diff / 60)} წუთის წინ`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} საათის წინ`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} დღის წინ`;
+  return date.toLocaleDateString();
+}
+
+// ფოტოების ჩვენება (მხოლოდ ბოლო ფოტო თითო მომხმარებლის)
 function renderPhotoFeed() {
-  const q = query(collection(db, "photos"), orderBy("timestamp", "desc"));
-  onSnapshot(q, snapshot => {
+  const photosCol = collection(db, "photos");
+  onSnapshot(photosCol, snapshot => {
     photoFeed.innerHTML = "";
     snapshot.forEach(doc => {
       const d = doc.data();
@@ -246,7 +257,7 @@ function renderPhotoFeed() {
       card.innerHTML = `
         <img src="${d.photo}" alt="ფოტო" />
         <p>${d.text || ""}</p>
-        <small>${d.email} | ${date.toLocaleString()}</small>
+        <small>${d.email} | ${getRelativeTime(date)}</small>
       `;
       photoFeed.appendChild(card);
     });
