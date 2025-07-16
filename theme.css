@@ -1,0 +1,42 @@
+:root {
+  /* Dark mode ფერები (ძირითადად არსებული) */
+  --color-bg: #000000;
+  --color-white: #FFFFFF;
+  --color-text-main: #E0E0E0;
+  --color-text-muted: #AAAAAA;
+  --color-card-bg: #121212;
+  --color-border: #333333;
+  --color-error: #FF5555;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode ცვლადები */
+body.light {
+  --color-bg: #ffffff;       /* საპირისპირო #000000 */
+  --color-white: #000000;    /* საპირისპირო #ffffff */
+  --color-text-main: #1f1f1f; /* საპირისპირო #e0e0e0 */
+  --color-text-muted: #555555; /* საპირისპირო #aaaaaa */
+  --color-card-bg: #e9e9e9;   /* საპირისპირო #121212 */
+  --color-border: #cccccc;    /* საპირისპირო #333333 */
+  --color-error: #ff5555;     /* წითელი უცვლელი */
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(0, 0, 0, 0.1); /* საპირისპირო თეთრის ან გამჭვირვალობა */
+  --transition-ease: all 0.3s ease-in-out;
+}
+#themeToggle{
+  position:fixed;top: 3px;right:5px;z-index:99999; width: 52px; height: 52px; font-size: 2.5rem;background: #00000000;
+  color: var(--color-white);
+  border: none;
+  
+  border-radius: 5px;
+  box-shadow: none;
+}

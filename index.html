@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FINONE</title>
+
+  <!-- SEO მეტა თეგები -->
+  <meta name="description" content="გადაიღე სელფი პირდაპირ ბრაუზერში, ატვირთე და გაუზიარე მარტივად! FINONE – სწრაფი და თანამედროვე ქართული ფოტოაპლიკაცია.">
+  <meta name="keywords" content="FINONE, პოლაროიდი, ფოტო აპი, ონლაინ გადაღება, სელფი, სელფი აპლიკაცია, კამერა საიტზე, ფოტო ბრაუზერში, ქართული ფოტო საიტი, ონლაინ ფოტოაპი, browser camera, selfie platform Georgia">
+  <meta name="author" content="შეჩემა">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FINONE – გადაიღე სელფი პირდაპირ საიტიდან" />
+  <meta property="og:description" content="სელფის გადაღება, ატვირთვა და გაზიარება – პირდაპირ ბრაუზერიდან. ქართული ონლაინ პლატფორმა სწრაფი ფოტოსაზიარებლად." />
+  <meta property="og:image" content="https://i.postimg.cc/bJr4Sz02/Picsart-25-07-12-03-10-36-438.jpg" />
+  <meta property="og:url" content="https://finone.vercel.app/" />
+  <meta property="og:site_name" content="FINONE" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FINONE – გადაიღე შენი მომენტი ონლაინ" />
+  <meta name="twitter:description" content="გადაიღე და გაუზიარე ფოტოები ონლაინ – პირდაპირ შენი ბრაუზერიდან ქართულად." />
+  <meta name="twitter:image" content="https://finone.vercel.app/" />
+
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="canonical" href="https://finone.vercel.app/" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Rounded&display=swap" rel="stylesheet" />
+
+  <!-- სტილი -->
+  <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  
+      <button id="themeToggle" aria-label="გადაართეთ თემა" >
+  <span id="themeIcon">🌙</span>
+</button>
+  
+  <a href="chat.html"><button class="chat">  <span class="material-symbols-rounded">forum</span></button></a>
+  
+  <!-- ბურგერი -->
+  <div class="burger" id="burgerBtn" aria-label="მენიუს გახსნა" role="button" tabindex="0">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- ნავიგაცია -->
+  <nav class="nav" id="navMenu" aria-label="მთავარი ნავიგაცია">
+    <a href="#" data-title="წესები" data-content="
+      <ul>
+        <li>იყავით პატივისცემით და მეგობრულად სხვა მომხმარებლების მიმართ.</li>
+        <li>არ ატვირთოთ შეურაცხმყოფელი, ძალადობრივი ან არაკორექტული კონტენტი.</li>
+        <li>დაიცავით ავტორთა უფლებები და არ გამოიყენოთ სხვა ადამიანების ფოტოები მათი თანხმობის გარეშე.</li>
+        <li>არ გამოიყენოთ საიტი სპამის, რეკლამირების ან სხვა არასასურველი მიზნებისთვის.</li>
+        <li>დაიცავით პირადი მონაცემების კონფიდენციალობა და არ გააზიაროთ სხვისი პირადი ინფორმაცია.</li>
+        <li>ადმინისტრაცია უფლებას იტოვებს წაშალოს ნებისმიერი კონტენტი, რომელიც არღვევს წესებს.</li>
+      </ul>
+    ">წესები</a>
+
+    <a href="#" data-title="ინსტრუქცია" data-content="
+      <ol>
+        <li>გაიარეთ რეგისტრაცია ან შედით სისტემაში ელ. ფოსტის და პაროლის გამოყენებით.</li>
+        <li>დააჭირეთ ღილაკს „გადაღება“, რათა ჩართოთ კამერა.</li>
+        <li>გაიღეთ სელფი ან ფოტო პირდაპირ ბრაუზერიდან.</li>
+        <li>სურვილის შემთხვევაში, დაამატეთ ტექსტი ფოტოს აღწერისთვის.</li>
+        <li>დააჭირეთ „ატვირთვას“, რათა ფოტო აიტვირთოს და გააიზიაროთ.</li>
+        <li>ნახეთ სხვა მომხმარებლების მიერ ატვირთული მთავარ გვერდზე.</li>
+      </ol>
+    ">ინსტრუქცია</a>
+
+    <a href="#" data-title="დახმარება" data-content="
+      <p>დაგვიკავშირდით:</p>
+      <ul>
+        <li>ელ. ფოსტა: <a href='mailto:official.finone@gmail.com'>official.finone@gmail.com</a></li><br>
+        <li>ინსტაგრამი: <a href='https://www.instagram.com/finone_official?igsh=MWV0OXV2OHE1aHh6dA=='>@finone_official</a></li>
+      </ul>
+    ">დახმარება</a>
+
+    <a href="#" data-title="პირობები" data-content="
+      <p>საიტი უზრუნველყოფს ფოტოების გადაღებისა და გაზიარების სერვისს მხოლოდ პირადი, არაკომერციული გამოყენებისთვის.</p>
+      <p>მომხმარებელი პასუხისმგებელია ატვირთული კონტენტზე და ავტორთა უფლებების დაცვაზე.</p>
+      <p>ადმინისტრაცია არ იღებს პასუხისმგებლობას მომხმარებლის მიერ ატვირთული ფოტოების შინაარსზე.</p>
+      <p>პირადი მონაცემები ინახება კონფიდენციალურად.</p>
+      <p>ადმინისტრაციას აქვს უფლება შეცვალოს საიტის ფუნქციონალი და წესები წინასწარი შეტყობინების გარეშე.</p>
+      <p>საიტის გამოყენებით, მომხმარებელი ეთანხმება ამ პირობებს და ვალდებულია მათი დაცვის.</p>
+    ">პირობები</a>
+
+    <a class="newsbtn" href="news.html">სიახლეები</a>
+
+
+    <a href="#" id="logoutBtn" style="color: #FF5555; font-weight: 700;">გასვლა</a>
+  </nav>
+
+  <!-- მოდალი -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalContent" tabindex="-1">
+    <div class="modal">
+      <button class="close-modal" id="closeModalBtn" aria-label="მოდალის დახურვა">&times;</button>
+      <h2 id="modalTitle">სათაური</h2>
+      <div id="modalContent">ტექსტი</div>
+    </div>
+  </div>
+  <header>⟡ FNΞ ⟡</header>
+  <main>
+    <div id="authSection">
+      <input id="email" placeholder="ელ. ფოსტა" type="email" autocomplete="email" />
+      <input id="password" type="password" placeholder="პაროლი" autocomplete="current-password" />
+      <button id="register">
+        <span class="material-symbols-rounded">person_add</span> რეგისტრაცია
+      </button>
+      <button id="login">
+        <span class="material-symbols-rounded">login</span> შესვლა
+      </button>
+    </div>
+
+    <div class="action-row hidden" id="userActions">
+      <button id="openCamera">
+        <span class="material-symbols-rounded">photo_camera_front</span> გადაღება
+      </button>
+      <button id="logout">
+        <span class="material-symbols-rounded">logout</span>
+      </button>
+    </div>
+
+    <div id="cameraSection" class="hidden">
+      <div class="camera-top-bar">
+       <button onclick="location.reload()" id="closeCamera">
+            <span class="material-symbols-rounded">close</span>
+        </button>
+        <button id="switchCameraBtn">
+          <span class="material-symbols-rounded">switch_camera</span> კამერის გადართვა
+        </button>
+      </div>
+            <select id="filterSelect">
+        <option value="none">None</option>
+        <option value="grayscale(100%)">Grayscale</option>
+        <option value="sepia(60%)">Sepia</option>
+        <option value="contrast(150%)">Contrast</option>
+        <option value="brightness(120%)">Brightness</option>
+        <option value="blur(3px)">Blur</option>
+        <option value="invert(100%)">Invert</option>
+        <option value="saturate(200%)">Saturate</option>
+        <option value="hue-rotate(90deg)">Hue Rotate</option>
+        <option value="opacity(50%)">Opacity</option>
+        <option value="drop-shadow(3px 3px 3px #777)">Drop Shadow</option>
+        <option value="brightness(80%) contrast(120%)">Bright & Contrast</option>
+        <option value="grayscale(50%) sepia(30%)">Grayscale + Sepia</option>
+        <option value="hue-rotate(180deg) saturate(150%)">Hue Rotate + Saturate</option>
+        <option value="blur(1.5px) contrast(130%)">Blur + Contrast</option>
+        <option value="sepia(80%) saturate(180%)">Sepia + Saturate</option>
+        <option value="contrast(200%) brightness(90%)">High Contrast + Dim</option>
+        <option value="grayscale(100%) brightness(110%)">BW + Brightness</option>
+        <option value="drop-shadow(5px 5px 5px rgba(0,0,0,0.5))">Strong Drop Shadow</option>
+      </select>
+
+      <video id="video" autoplay playsinline></video>
+      <textarea id="photoText" placeholder="ტექსტი ფოტოსთვის (სურვილისამებრ)"></textarea>
+      <button id="snap">
+        <span class="material-symbols-rounded">upload</span>
+      </button>
+    </div>
+
+    <div id="photoFeed"></div>
+  </main>
+
+  <script type="module" src="script.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+<title>Finone ჩატი</title>
+<link rel="stylesheet" href="chat.css" type="text/css" media="all" />
+<link rel="stylesheet" href="theme.css">
+
+</head>
+<body>
+    <a href="index.html"><button class="chat">            <span class="material-symbols-rounded">close</span></button></a>
+    
+    
+    <button id="themeToggle" aria-label="გადაართეთ თემა" >
+  <span id="themeIcon">🌙</span>
+</button>
+
+<header>⟡ FNΞ chat ⟡
+</header>
+<main>
+  <div id="messagesContainer" aria-live="polite" aria-relevant="additions"></div>
+<br><br><br><br><br>
+  <div id="inputArea" aria-label="ჩატის ტექსტის შეყვანა და გაგზავნა">
+    <textarea id="chatInput" placeholder="შეიყვანე შეტყობინება..." rows="1" aria-label="ჩატში შეტყობინების დაწერა"></textarea>
+    <button id="sendMessage" aria-label="შეტყობინების გაგზავნა">
+      <span class="material-symbols-rounded">send</span>
+    </button>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+    authDomain: "photog-457a1.firebaseapp.com",
+    projectId: "photog-457a1",
+    databaseURL: "https://photog-457a1-default-rtdb.europe-west1.firebasedatabase.app",
+    storageBucket: "photog-457a1.appspot.com",
+    messagingSenderId: "568507243860",
+    appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
+
+  const messagesContainer = document.getElementById("messagesContainer");
+  const chatInput = document.getElementById("chatInput");
+  const sendMessageBtn = document.getElementById("sendMessage");
+
+  let currentUser = null;
+  let replyingTo = null;
+
+  function getRelativeTime(timestamp) {
+    const now = Date.now();
+    const diffSeconds = Math.floor((now - timestamp) / 1000);
+    if (diffSeconds < 60) return "ახლახანს";
+    if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} წუთის წინ`;
+    if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)} საათის წინ`;
+    if (diffSeconds < 604800) return `${Math.floor(diffSeconds / 86400)} დღის წინ`;
+    return new Date(timestamp).toLocaleDateString("ka-GE");
+  }
+
+  function renderMessage(msg, key) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+
+    // თუ არის პასუხი, ვაჩვენებთ "პასუხი: [ელფოსტა]" და ტექსტს
+    if (msg.replyToText) {
+      const replyingDiv = document.createElement("div");
+      replyingDiv.classList.add("replyingTo");
+      const replyToUser = msg.replyToEmail || "უცნობი";
+      replyingDiv.textContent = `პასუხი ${replyToUser}: ${msg.replyToText}`;
+      div.appendChild(replyingDiv);
+    }
+
+    const emailDiv = document.createElement("div");
+    emailDiv.classList.add("email");
+    emailDiv.textContent = msg.email || "უცნობი";
+
+    const timeDiv = document.createElement("div");
+    timeDiv.classList.add("time");
+    timeDiv.textContent = getRelativeTime(msg.timestamp);
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("text");
+    textDiv.textContent = msg.text;
+
+    // ღილაკი პასუხის მისაცემად
+    const replyBtn = document.createElement("button");
+    replyBtn.classList.add("reply-btn");
+    replyBtn.textContent = "პასუხი";
+    replyBtn.addEventListener("click", () => {
+      replyingTo = {
+        key,
+        text: msg.text,
+        email: msg.email || "უცნობი"
+      };
+      chatInput.value = `@${replyingTo.email}: ${replyingTo.text}\n`;
+      chatInput.focus();
+    });
+
+    div.appendChild(emailDiv);
+    div.appendChild(timeDiv);
+    div.appendChild(textDiv);
+    div.appendChild(replyBtn);
+
+    return div;
+  }
+
+  function listenForMessages() {
+    onChildAdded(messagesRef, snapshot => {
+      const msg = snapshot.val();
+      if (!msg) return;
+
+      const messageElement = renderMessage(msg, snapshot.key);
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+  }
+
+  sendMessageBtn.addEventListener("click", async () => {
+    let text = chatInput.value.trim();
+    if (!text || !currentUser) return;
+
+    let replyToText = null;
+    let replyToEmail = null;
+    if (replyingTo) {
+      const lines = text.split('\n');
+      if (lines.length > 1 && lines[0].startsWith(`@${replyingTo.email}:`)) {
+        replyToText = replyingTo.text;
+        replyToEmail = replyingTo.email;
+        lines.shift();
+        text = lines.join('\n').trim();
+      }
+      replyingTo = null;
+    }
+
+    if (!text) return;
+
+    try {
+      await push(messagesRef, {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        timestamp: Date.now(),
+        replyToText,
+        replyToEmail
+      });
+      chatInput.value = "";
+      chatInput.focus();
+    } catch (e) {
+      alert("შეტყობინების გაგზავნის შეცდომა: " + e.message);
+    }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      alert("გთხოვთ შეხვიდეთ Finone-ზე ანგარიშით");
+      window.location.href = "/";
+    } else {
+      currentUser = user;
+      listenForMessages();
+    }
+  });
+
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessageBtn.click();
+    }
+  });
+</script>
+<script src="theme.js"></script>
+</body>
+</html>
