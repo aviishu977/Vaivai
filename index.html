@@ -38,11 +38,33 @@
 </head>
 <body>
   
+  <!-- Material Symbols (აუცილებლად ფონსისთვის) -->
+
+<nav class="bottom-nav" aria-label="ქვედა ნავიგაცია">
+  
+  <a href="news.html">
+  <button class="bnv-btn" type="button" aria-label="თემა">
+<span class="material-symbols-rounded">feed</span>
+<span class="active-dot"></span>
+  </button></a>
+  
+  
+      <button id="openCamera">
+<span class="material-symbols-rounded">photo_camera</span></button>
+
+<a href="chat.html">
+ <button class="bnv-btn" type="button" aria-label="ჩათი">
+    <span class="material-symbols-rounded">forum</span>
+    <span class="active-dot"></span>
+  </button></a>
+  
+  
+</nav>
+
+  
       <button id="themeToggle" aria-label="გადაართეთ თემა" >
   <span id="themeIcon">🌙</span>
 </button>
-  
-  <a href="chat.html"><button class="chat">  <span class="material-symbols-rounded">forum</span></button></a>
   
   <!-- ბურგერი -->
   <div class="burger" id="burgerBtn" aria-label="მენიუს გახსნა" role="button" tabindex="0">
@@ -120,9 +142,7 @@
     </div>
 
     <div class="action-row hidden" id="userActions">
-      <button id="openCamera">
-        <span class="material-symbols-rounded">photo_camera_front</span> გადაღება
-      </button>
+
       <button id="logout">
         <span class="material-symbols-rounded">logout</span>
       </button>
@@ -163,7 +183,7 @@
       <textarea id="photoText" placeholder="ტექსტი ფოტოსთვის (სურვილისამებრ)"></textarea>
       <button id="snap">
         <span class="material-symbols-rounded">upload</span>
-      </button>
+      </button> <br><br><br><br>
     </div>
 
     <div id="photoFeed"></div>
