@@ -8,6 +8,33 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
   <link rel="stylesheet" href="theme.css">
+    <meta name="description" content="გადაიღე სელფი პირდაპირ ბრაუზერში, ატვირთე და გაუზიარე მარტივად! FINONE – სწრაფი და თანამედროვე ქართული ფოტოაპლიკაცია.">
+  <meta name="keywords" content="FINONE, პოლაროიდი, ფოტო აპი, ონლაინ გადაღება, სელფი, სელფი აპლიკაცია, კამერა საიტზე, ფოტო ბრაუზერში, ქართული ფოტო საიტი, ონლაინ ფოტოაპი, browser camera, selfie platform Georgia">
+  <meta name="author" content="შეჩემა">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FINONE – გადაიღე სელფი პირდაპირ საიტიდან" />
+  <meta property="og:description" content="სელფის გადაღება, ატვირთვა და გაზიარება – პირდაპირ ბრაუზერიდან. ქართული ონლაინ პლატფორმა სწრაფი ფოტოსაზიარებლად." />
+  <meta property="og:image" content="https://i.postimg.cc/bJr4Sz02/Picsart-25-07-12-03-10-36-438.jpg" />
+  <meta property="og:url" content="https://finone.vercel.app/" />
+  <meta property="og:site_name" content="FINONE" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FINONE – გადაიღე შენი მომენტი ონლაინ" />
+  <meta name="twitter:description" content="გადაიღე და გაუზიარე ფოტოები ონლაინ – პირდაპირ შენი ბრაუზერიდან ქართულად." />
+  <meta name="twitter:image" content="https://finone.vercel.app/" />
+
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="canonical" href="https://finone.vercel.app/" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Material+Symbols+Rounded&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --color-bg: #000;
@@ -177,21 +204,42 @@
       .news-img { border-radius: 12px 12px 0 0; }
       #backBtn { font-size: 1rem; padding: 9px 14px;}
     }
+    .bnv-btn span{
+      font-size: 2rem;
+    }
   </style>
 </head>
 <body>
+  
+  <nav class="bottom-nav" aria-label="ქვედა ნავიგაცია">
+  
+  <a href="#forup">
+  <button class="bnv-btn" type="button" aria-label="თემა">
+<span class="material-symbols-rounded">arrow_upward</span>
+<span class="active-dot"></span>
+  </button></a>
+  
+  
+    <a href="index.html"> <button class="bnv-btn" id="openCamera">
+<span class="material-symbols-rounded">home</span></button></a>
+
+<a href="chat.html">
+ <button class="bnv-btn" type="button" aria-label="ჩათი">
+    <span class="material-symbols-rounded">forum</span>
+    <span class="active-dot"></span>
+  </button></a>
+  
+  
+</nav>
+  
   <button id="themeToggle" aria-label="გადაართეთ თემა" >
   <span id="themeIcon">🌙</span>
 </button>
-  <header>
+  <header id="forup">
  ⟡ FNΞ NEWS ⟡
   </header>
-  <a href="index.html" id="backBtn">
-    <span class="material-icons-round" aria-hidden="true">arrow_back</span>
-    მთავარ გვერდზე დაბრუნება
-  </a>
   <main>
-    <div id="newsList">ჩატვირთვა...</div>
+    <div id="newsList">ჩატვირთვა...</div><br><br>br
   </main>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
