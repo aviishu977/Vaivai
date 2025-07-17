@@ -40,3 +40,81 @@ body.light {
   border-radius: 5px;
   box-shadow: none;
 }
+.bottom-nav {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 55px;
+  background: var(--color-bg);
+  backdrop-filter: blur(16px);
+  border-radius: 17px 17px 0px 0px;
+  border-top: 3px solid var(--color-white);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 9999;
+  animation: navUp .7s cubic-bezier(.56,.1,.36,1.08);
+  font-family: 'Inter', sans-serif;
+}
+@keyframes navUp {
+  from { opacity:0; transform:translate(-50%,30px);}
+  to { opacity:1; transform:translateX(-50%);}
+}
+.bottom-nav a{
+  text-decoration: none;
+}
+.bnv-btn {
+  background: var(--color-bg);
+  border: none;
+  color: var(--color-white);
+  font-size: 2.1rem;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  width: 45px;
+  border-radius: 5px;
+  margin: 0 5px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background .17s, color .17s;
+  text-decoration: none;
+  border: 0px solid var(--color-white);
+}
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-size: 2.1rem;
+}
+.bottom-nav label {
+  font-size: 11px;
+  margin-top: 2.3px;
+  user-select: none;
+}
+.active-dot {
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(90deg, #FF5555 40%, #ffd500 100%);
+  border-radius: 50%;
+  margin: 5px auto 0;
+  box-shadow: 0 0 7px #FF555588;
+  display: none; /* ნამდვილი აქტივობა რომ არ გამოაჩინოს ფუნქციურად */
+}
+@media (min-width: 700px) {
+  .bottom-nav { display: none; }
+}
+.bottom-nav #openCamera{
+  margin-top: -30px;
+  border: 2px solid var(--color-white);
+  border-radius: 50%;
+  padding: 0px 5px;
+  width: 60px;
+  height: 60px;
+  background: var(--color-white);
+}
+#openCamera span{
+  color: var(--color-bg);
+}
