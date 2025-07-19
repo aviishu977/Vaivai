@@ -1,0 +1,101 @@
+:root {
+  /* Dark mode ფერები (ძირითადად არსებული) */
+  --color-bg: #000000;
+  --color-white: #FFFFFF;
+  --color-text-main: #E0E0E0;
+  --color-text-muted: #AAAAAA;
+  --color-card-bg: #121212;
+  --color-border: #333333;
+  --color-error: #FF5555;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode ცვლადები */
+/* body.light {
+  --color-bg: #ffffff;        საპირისპირო #000000 
+  --color-white: #000000;     საპირისპირო #ffffff 
+  --color-text-main: #1f1f1f;  საპირისპირო #e0e0e0 
+  --color-text-muted: #555555;  საპირისპირო #aaaaaa 
+  --color-card-bg: #e9e9e9;    საპირისპირო #121212 
+  --color-border: #cccccc;     საპირისპირო #333333 
+  --color-error: #ff5555;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(0, 0, 0, 0.1);  
+  --transition-ease: all 0.3s ease-in-out;
+}*/
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 55px;
+  background: var(--color-bg);
+  backdrop-filter: blur(16px);
+  border-radius: 17px 17px 0px 0px;
+  border-top: 3px solid var(--color-white);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 9999;
+  
+  font-family: 'Inter', sans-serif;
+}
+.bottom-nav a{
+  text-decoration: none;
+}
+.bnv-btn {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 2.1rem;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  width: 45px;
+  border-radius: 5px;
+  margin: 0 5px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background .17s, color .17s;
+  text-decoration: none;
+  border: 0px solid var(--color-white);
+}
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-size: 2.1rem;
+}
+
+@media (min-width: 700px) {
+  .bottom-nav { display: none; }
+}
+.bottom-nav #openCamera, #snap{
+  margin-top: -30px;
+  border: 5px solid var(--color-bg);
+  border-radius: 50%;
+  padding: 0px 5px;
+  width: 60px;
+  height: 60px;
+  background: var(--color-white);
+  box-shadow: none;
+}
+#openCamera span, #snap span{
+  color: var(--color-bg);
+}
+.color-option{
+  width: 30px;
+  margin: 5px;
+}
