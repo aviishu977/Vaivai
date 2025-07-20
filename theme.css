@@ -1,0 +1,145 @@
+:root {
+  /* Dark mode ფერები (ძირითადად არსებული) */
+  --color-bg: #000000;
+  --color-white: #FFFFFF;
+  --color-text-main: #E0E0E0;
+  --color-text-muted: #AAAAAA;
+  --color-card-bg: #121212;
+  --color-border: #333333;
+  --color-error: #FF5555;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode ცვლადები */
+/* body.light {
+  --color-bg: #ffffff;        საპირისპირო #000000 
+  --color-white: #000000;     საპირისპირო #ffffff 
+  --color-text-main: #1f1f1f;  საპირისპირო #e0e0e0 
+  --color-text-muted: #555555;  საპირისპირო #aaaaaa 
+  --color-card-bg: #e9e9e9;    საპირისპირო #121212 
+  --color-border: #cccccc;     საპირისპირო #333333 
+  --color-error: #ff5555;
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --spacing-unit: 16px;
+  --max-content-width: 500px;
+  --button-height: 52px;
+  --shadow-elevation-1: 0 6px 15px rgba(0, 0, 0, 0.1);  
+  --transition-ease: all 0.3s ease-in-out;
+}*/
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 65px;
+  background: var(--color-bg);
+  backdrop-filter: blur(16px);
+  border-radius: 17px 17px 0px 0px;
+  border-top: 3px solid var(--color-white);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  z-index: 9999;
+  
+  font-family: 'Inter', sans-serif;
+}
+.bottom-nav a{
+  text-decoration: none;
+}
+.bnv-btn {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 2.1rem;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  width: 45px;
+  border-radius: 5px;
+  margin: 0 5px;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background .17s, color .17s;
+  text-decoration: none;
+  border: 0px solid var(--color-white);
+}
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-size: 2.1rem;
+}
+
+@media (min-width: 700px) {
+  .bottom-nav { display: none; }
+}
+.bottom-nav #openCamera, #snap{
+  margin-top: -40px;
+  border: 5px solid var(--color-bg);
+  border-radius: 50%;
+  padding: 0px 5px;
+  width: 60px;
+  height: 60px;
+  background: var(--color-white);
+  box-shadow: none;
+}
+#openCamera span, #snap span{
+  color: var(--color-bg);
+}
+.color-option{
+  width: 30px;
+  margin: 5px;
+}
+/* Fullscreen Preloader კონტეინერი */
+
+
+/* Fullscreen Preloader კონტეინერი */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg); /* მუქი ფონით */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  box-shadow: var(--shadow-elevation-1); /* ელეგანტური ჩრდილი */
+}
+
+/* გაუმჯობესებული ლოდერი Dark სტილში */
+.loader {
+  width: 80px;
+  aspect-ratio: 1;
+  border: 10px solid var(--color-card-bg); /* მდგრადი მუქი ზღვარი */
+  box-sizing: border-box;
+  background: 
+    radial-gradient(farthest-side, var(--color-white) 98%, transparent) top,
+    radial-gradient(farthest-side, var(--color-white) 98%, transparent) top,
+    radial-gradient(farthest-side, var(--color-white) 98%, transparent) left,
+    radial-gradient(farthest-side, var(--color-white) 98%, transparent) right,
+    radial-gradient(farthest-side, var(--color-white) 98%, transparent) bottom,
+    var(--color-card-bg);
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  filter: blur(4px) contrast(10); 
+  animation: l19 2s infinite;
+  border-radius: var(--border-radius-md); /* ელეგანტური მომრგვალება */
+  box-shadow: var(--shadow-elevation-1);
+}
+
+@keyframes l19 {
+  0%   {background-position:top,top,left,right,bottom}
+  25%  {background-position:right,top,left,right,bottom}
+  50%  {background-position:bottom,top,left,right,bottom}
+  75%  {background-position:left,top,left,right,bottom}
+  100% {background-position:top,top,left,right,bottom}
+}

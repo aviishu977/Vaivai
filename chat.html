@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+<title>Finone ჩატი</title>
+<link rel="stylesheet" href="chat.css" type="text/css" media="all" />
+<link rel="stylesheet" href="theme.css">
+
+</head>
+<body>
+    <a href="index.html"><button class="chat">            <span class="material-symbols-rounded">close</span></button></a>
+
+<header>⟡ FNΞ chat ⟡
+</header>
+<main><br>
+  <div id="messagesContainer" aria-live="polite" aria-relevant="additions"></div>
+<br><br><br><br><br><p id="charCount" style="font-size: 14px; color: gray;">0/2000</p>
+  <div id="inputArea" aria-label="ჩატის ტექსტის შეყვანა და გაგზავნა">
+<textarea id="chatInput" placeholder="შეიყვანე შეტყობინება..." rows="1" maxlength="2000" aria-label="ჩატში შეტყობინების დაწერა"></textarea>
+<p id="limitWarning" style="color: red; display: none;">შეგიძლია მაქსიმუმ 2000 სიმბოლო დაწერო.</p>
+
+<script>
+  const textarea = document.getElementById('chatInput');
+  const charCount = document.getElementById('charCount');
+  const warning = document.getElementById('limitWarning');
+  const maxLength = 2000;
+
+  textarea.addEventListener('input', () => {
+    const length = textarea.value.length;
+    charCount.textContent = `${length}/${maxLength}`;
+
+    if (length >= maxLength) {
+      warning.style.display = 'block';
+    } else {
+      warning.style.display = 'none';
+    }
+  });
+</script>
+    <button id="sendMessage" aria-label="შეტყობინების გაგზავნა">
+      <span class="material-symbols-rounded">send</span>
+    </button>
+  </div>
+</main>
+
+
+<!-- Preloader Wrapper -->
+<div id="preloader">
+  <div class="loader"></div>
+</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, ref, push, onChildAdded, onChildChanged, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRtcHMJJj-WD86E41ZVS3cm2ggQHyPYnI",
+    authDomain: "photog-457a1.firebaseapp.com",
+    projectId: "photog-457a1",
+    databaseURL: "https://photog-457a1-default-rtdb.europe-west1.firebasedatabase.app",
+    storageBucket: "photog-457a1.appspot.com",
+    messagingSenderId: "568507243860",
+    appId: "1:568507243860:web:f9a7128c3e703aa79c3cc1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, "messages");
+
+  const messagesContainer = document.getElementById("messagesContainer");
+  const chatInput = document.getElementById("chatInput");
+  const sendMessageBtn = document.getElementById("sendMessage");
+
+  let currentUser = null;
+  let replyingTo = null;
+
+  function getRelativeTime(timestamp) {
+    const now = Date.now();
+    const diffSeconds = Math.floor((now - timestamp) / 1000);
+    if (diffSeconds < 60) return "ახლახანს";
+    if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} წუთის წინ`;
+    if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)} საათის წინ`;
+    if (diffSeconds < 604800) return `${Math.floor(diffSeconds / 86400)} დღის წინ`;
+    return new Date(timestamp).toLocaleDateString("ka-GE");
+  }
+
+  function renderReactions(reactions = {}, messageKey) {
+    const reactionContainer = document.createElement("div");
+    reactionContainer.className = "reaction-container";
+
+    const emojis = ["❤️", "🤬", "😂", "🔥", "🥲"];
+
+    emojis.forEach(emoji => {
+      const count = reactions[emoji] ? Object.keys(reactions[emoji]).length : 0;
+      const btn = document.createElement("button");
+      btn.className = "reaction-btn";
+      btn.textContent = `${emoji} ${count || ""}`;
+      if (reactions[emoji]?.[currentUser.uid]) {
+        btn.classList.add("active");
+      }
+
+      btn.addEventListener("click", async () => {
+        const reactionRef = ref(db, `messages/${messageKey}/reactions/${emoji}/${currentUser.uid}`);
+        const alreadyReacted = reactions[emoji]?.[currentUser.uid];
+
+        try {
+          if (alreadyReacted) {
+            await set(reactionRef, null); // Remove reaction
+          } else {
+            await set(reactionRef, true); // Add reaction
+          }
+        } catch (err) {
+          console.error("რეაქციის შეცდომა:", err);
+        }
+      });
+
+      reactionContainer.appendChild(btn);
+    });
+
+    return reactionContainer;
+  }
+
+  function renderMessage(msg, key) {
+    const existingMessage = document.getElementById(`message-${key}`);
+    if (existingMessage) {
+      // თუ უკვე არსებობს, განვაახლოთ მხოლოდ რეაქციები და ტექსტი თუ საჭირო
+      const newText = msg.text || "";
+      const textDiv = existingMessage.querySelector(".text");
+      if (textDiv.textContent !== newText) {
+        textDiv.textContent = newText;
+      }
+      // რეაქციები განახლება
+      const oldReactionDiv = existingMessage.querySelector(".reaction-container");
+      const newReactionDiv = renderReactions(msg.reactions, key);
+      existingMessage.replaceChild(newReactionDiv, oldReactionDiv);
+      return existingMessage;
+    }
+
+    // თუ არ არსებობს, შევქმნათ თავიდან
+    const div = document.createElement("div");
+    div.classList.add("message");
+    div.id = `message-${key}`;
+
+    if (msg.replyToText) {
+      const replyingDiv = document.createElement("div");
+      replyingDiv.classList.add("replyingTo");
+      const replyToUser = msg.replyToEmail || "უცნობი";
+      replyingDiv.textContent = `პასუხი ${replyToUser}: ${msg.replyToText}`;
+      div.appendChild(replyingDiv);
+    }
+
+    const emailDiv = document.createElement("div");
+    emailDiv.classList.add("email");
+    emailDiv.textContent = msg.email || "უცნობი";
+
+    const timeDiv = document.createElement("div");
+    timeDiv.classList.add("time");
+    timeDiv.textContent = getRelativeTime(msg.timestamp);
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("text");
+    textDiv.textContent = msg.text;
+
+    const replyBtn = document.createElement("button");
+    replyBtn.classList.add("reply-btn");
+    replyBtn.textContent = "პასუხი";
+    replyBtn.addEventListener("click", () => {
+      replyingTo = {
+        key,
+        text: msg.text,
+        email: msg.email || "უცნობი"
+      };
+      chatInput.value = `@${replyingTo.email}: ${replyingTo.text}\n`;
+      chatInput.focus();
+    });
+
+    div.appendChild(emailDiv);
+    div.appendChild(timeDiv);
+    div.appendChild(textDiv);
+    div.appendChild(replyBtn);
+
+    const reactionBlock = renderReactions(msg.reactions, key);
+    div.appendChild(reactionBlock);
+
+    return div;
+  }
+
+  function listenForMessages() {
+    // ახალი მესიჯების დამატება
+    onChildAdded(messagesRef, snapshot => {
+      const msg = snapshot.val();
+      if (!msg) return;
+
+      const messageElement = renderMessage(msg, snapshot.key);
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+
+    // არსებული მესიჯების ცვლილებების მოსმენა (განსაკუთრებით რეაქციები)
+    onChildChanged(messagesRef, snapshot => {
+      const msg = snapshot.val();
+      if (!msg) return;
+
+      const messageElement = renderMessage(msg, snapshot.key);
+
+      // თუ მესიჯი უკვე დომშია, მისი განახლება (renderMessage ზუსტად ამას აკეთებს)
+      if (!messagesContainer.contains(messageElement)) {
+        messagesContainer.appendChild(messageElement);
+      }
+    });
+  }
+
+  sendMessageBtn.addEventListener("click", async () => {
+    let text = chatInput.value.trim();
+    if (!text || !currentUser) return;
+
+    let replyToText = null;
+    let replyToEmail = null;
+    if (replyingTo) {
+      const lines = text.split('\n');
+      if (lines.length > 1 && lines[0].startsWith(`@${replyingTo.email}:`)) {
+        replyToText = replyingTo.text;
+        replyToEmail = replyingTo.email;
+        lines.shift();
+        text = lines.join('\n').trim();
+      }
+      replyingTo = null;
+    }
+
+    if (!text) return;
+
+    try {
+      await push(messagesRef, {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        timestamp: Date.now(),
+        replyToText,
+        replyToEmail
+      });
+      chatInput.value = "";
+      chatInput.focus();
+    } catch (e) {
+      alert("შეტყობინების გაგზავნის შეცდომა: " + e.message);
+    }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      alert("გთხოვთ შეხვიდეთ Finone-ზე ანგარიშით");
+      window.location.href = "/";
+    } else {
+      currentUser = user;
+      listenForMessages();
+    }
+  });
+
+  chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessageBtn.click();
+    }
+  });
+</script>
+<script src="theme.js"></script>
+</body>
+</html>
