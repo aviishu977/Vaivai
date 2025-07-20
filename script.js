@@ -12,7 +12,11 @@ import {
   getDoc,
   serverTimestamp,
   query,
-  orderBy
+  orderBy,
+  addDoc,
+  where,
+  getDocs,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 import {
   getAuth,
@@ -64,7 +68,7 @@ const modalContent = document.getElementById("modalContent");
 const closeModalBtn = document.getElementById("closeModalBtn");
 
 // =============================
-// App State Variables
+// State Variables
 // =============================
 let stream = null;
 let currentFacingMode = "user";
@@ -174,13 +178,17 @@ function stopCamera() {
   snapBtn.classList.add("hidden");
 }
 
-filterSelect.addEventListener("change", () => {
+filterSelect && filterSelect.addEventListener("change", () => {
   video.style.filter = filterSelect.value || "none";
 });
 switchCameraBtn && switchCameraBtn.addEventListener("click", () => {
   currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
   startCamera();
 });
+
+// =============================
+// პოსტირების მთავარი ბლოკი (ძველი პოსტის წაშლა)
+// =============================
 
 snapBtn.addEventListener("click", async () => {
   if (!stream) return alert("გთხოვთ, ჩართოთ კამერა");
@@ -199,7 +207,14 @@ snapBtn.addEventListener("click", async () => {
   const user = auth.currentUser;
   if (!user) return alert("გთხოვთ, გაიაროთ ავტორიზაცია");
   try {
-    await setDoc(doc(db, "photos", user.uid), {
+    // ძველი პოსტების წაშლა
+    const q = query(collection(db, "photos"), where("uid", "==", user.uid));
+    const prev = await getDocs(q);
+    for (const docSnap of prev.docs) {
+      await deleteDoc(doc(db, "photos", docSnap.id));
+    }
+    // ახალი პოსტის დამატება
+    await addDoc(collection(db, "photos"), {
       uid: user.uid,
       email: user.email,
       photo: imgData,
@@ -242,7 +257,6 @@ function renderReactions(reactions = {}, photoId) {
       const data = snap.data();
       const updatedReactions = {...(data.reactions || {})};
       if (updatedReactions[emoji]?.[currentUser.uid]) {
-        // remove
         delete updatedReactions[emoji][currentUser.uid];
         if (Object.keys(updatedReactions[emoji]).length === 0)
           delete updatedReactions[emoji];
@@ -275,7 +289,6 @@ function createPhotoCard(data, photoId) {
     <p>${data.text ? escapeHtml(data.text) : ""}</p>
     <small class="meta">${data.email} | ${getRelativeTime(date)}</small>
   `;
-  // რეაქციები
   const reactionBlock = renderReactions(data.reactions, photoId);
   reactionBlock.classList.add('reactions-block');
   card.appendChild(reactionBlock);
@@ -299,24 +312,19 @@ function updateReactionBlock(photoId, newReactions) {
 function renderPhotoFeed() {
   const photosCol = collection(db, "photos");
   const q = query(photosCol, orderBy("timestamp", "desc"));
-  // Feed-ის პარალელური მენეჯმენტი
-  const cardMap = {}; // photoId => card DOM node
-
+  const cardMap = {};
   onSnapshot(q, snapshot => {
     snapshot.docChanges().forEach(change => {
       const d = change.doc.data();
       const photoId = change.doc.id;
       if (change.type === "added") {
-        // ამატებს მხოლოდ ახალ ფოტოს
         const card = createPhotoCard(d, photoId);
         cardMap[photoId] = card;
-        // ახალი ყოველთვის წინაა, ამიტომ prepend
         if (photoFeed.firstChild)
           photoFeed.insertBefore(card, photoFeed.firstChild);
         else
           photoFeed.appendChild(card);
       } else if (change.type === "modified") {
-        // მხოლოდ რეაქციების განახლება
         updateReactionBlock(photoId, d.reactions);
       } else if (change.type === "removed") {
         if (cardMap[photoId]) {
