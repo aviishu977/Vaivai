@@ -591,10 +591,8 @@ textarea{
 .reaction-btn {
   all: unset;
   cursor: pointer;
-  width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(to bottom right, var(--color-white) , var(--color-white) );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -609,6 +607,12 @@ textarea{
   font-family: inherit;
   margin: 0 4px;
   position: relative;
+    background: radial-gradient(circle at 30% 30%, var(--color-white) , var(--color-text-main));
+  color: #d11144;
+  font-weight: 600;
+  transform: scale(1.12);
+  z-index: 1;
+  width: 50px;
 }
 
 .reaction-btn .count {
@@ -617,15 +621,6 @@ textarea{
   color: var(--color-text-muted);
   font-weight: 500;
   transition: color 0.2s;
-}
-
-.reaction-btn.active {
-  background: radial-gradient(circle at 30% 30%, var(--color-white) , var(--color-text-main));
-  color: #d11144;
-  font-weight: 600;
-  transform: scale(1.12);
-  z-index: 1;
-  width: 50px;
 }
 
 .reaction-btn:hover:not(.active) {
