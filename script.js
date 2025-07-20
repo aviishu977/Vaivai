@@ -85,6 +85,12 @@ function getRelativeTime(date) {
   return date.toLocaleDateString();
 }
 
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // =============================
 // Auth
 // =============================
@@ -171,7 +177,7 @@ function stopCamera() {
 filterSelect.addEventListener("change", () => {
   video.style.filter = filterSelect.value || "none";
 });
-switchCameraBtn.addEventListener("click", () => {
+switchCameraBtn && switchCameraBtn.addEventListener("click", () => {
   currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
   startCamera();
 });
@@ -213,7 +219,7 @@ snapBtn.addEventListener("click", async () => {
 });
 
 // =============================
-// რეაქციების ბლოკი, ზუსტად ჩატის დიზაინით
+// რეაქციების ბლოკი
 // =============================
 
 function renderReactions(reactions = {}, photoId) {
@@ -228,7 +234,6 @@ function renderReactions(reactions = {}, photoId) {
     btn.textContent = count > 0 ? `${emoji} ${count}` : emoji;
     btn.title = emoji;
     if (currentUser && users[currentUser.uid]) btn.classList.add("active");
-
     btn.addEventListener("click", async () => {
       if (!currentUser) return alert("შესვლა აუცილებელია");
       const docRef = doc(db, "photos", photoId);
@@ -251,58 +256,89 @@ function renderReactions(reactions = {}, photoId) {
         alert("რეაქციის შეცდომა: " + e.message);
       }
     });
-
     container.appendChild(btn);
   });
   return container;
 }
 
 // =============================
-// ფოტოების feed (ფოტო + რეაქცია)
+// ფოტოს card generator
+// =============================
+
+function createPhotoCard(data, photoId) {
+  const date = data.timestamp?.toDate ? data.timestamp.toDate() : new Date();
+  const card = document.createElement("div");
+  card.className = "card";
+  card.setAttribute('data-photo-id', photoId);
+  card.innerHTML = `
+    <img src="${data.photo}" alt="ფოტო" />
+    <p>${data.text ? escapeHtml(data.text) : ""}</p>
+    <small class="meta">${data.email} | ${getRelativeTime(date)}</small>
+  `;
+  // რეაქციები
+  const reactionBlock = renderReactions(data.reactions, photoId);
+  reactionBlock.classList.add('reactions-block');
+  card.appendChild(reactionBlock);
+  return card;
+}
+
+function updateReactionBlock(photoId, newReactions) {
+  const card = photoFeed.querySelector(`[data-photo-id="${photoId}"]`);
+  if (!card) return;
+  const oldBlock = card.querySelector('.reactions-block');
+  const newBlock = renderReactions(newReactions, photoId);
+  newBlock.classList.add('reactions-block');
+  if (oldBlock) card.replaceChild(newBlock, oldBlock);
+  else card.appendChild(newBlock);
+}
+
+// =============================
+// Feed Rendering (ოპტიმიზირებული!)
 // =============================
 
 function renderPhotoFeed() {
-  // სორტირება: ახალი ფოტოები პირველი
   const photosCol = collection(db, "photos");
   const q = query(photosCol, orderBy("timestamp", "desc"));
+  // Feed-ის პარალელური მენეჯმენტი
+  const cardMap = {}; // photoId => card DOM node
+
   onSnapshot(q, snapshot => {
-    photoFeed.innerHTML = "";
-    snapshot.forEach(docSnap => {
-      const d = docSnap.data();
-      const date = d.timestamp?.toDate ? d.timestamp.toDate() : new Date();
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${d.photo}" alt="ფოტო" />
-        <p>${d.text ? escapeHtml(d.text) : ""}</p>
-        <small class="meta">${d.email} | ${getRelativeTime(date)}</small>
-      `;
-      // რეაქციების ჩასმა
-      const reactionBlock = renderReactions(d.reactions, docSnap.id);
-      card.appendChild(reactionBlock);
-      photoFeed.appendChild(card);
+    snapshot.docChanges().forEach(change => {
+      const d = change.doc.data();
+      const photoId = change.doc.id;
+      if (change.type === "added") {
+        // ამატებს მხოლოდ ახალ ფოტოს
+        const card = createPhotoCard(d, photoId);
+        cardMap[photoId] = card;
+        // ახალი ყოველთვის წინაა, ამიტომ prepend
+        if (photoFeed.firstChild)
+          photoFeed.insertBefore(card, photoFeed.firstChild);
+        else
+          photoFeed.appendChild(card);
+      } else if (change.type === "modified") {
+        // მხოლოდ რეაქციების განახლება
+        updateReactionBlock(photoId, d.reactions);
+      } else if (change.type === "removed") {
+        if (cardMap[photoId]) {
+          cardMap[photoId].remove();
+          delete cardMap[photoId];
+        }
+      }
     });
   });
-}
-
-// უბრალოდ პატარა helper XSS საფრთხის თავიდან ასაცილებლად
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 // =============================
 // UI საორგანიზაციო ივენთები
 // =============================
 
-openCameraBtn.addEventListener("click", startCamera);
+openCameraBtn && openCameraBtn.addEventListener("click", startCamera);
 
-burgerBtn.addEventListener("click", () => {
+burgerBtn && burgerBtn.addEventListener("click", () => {
   navMenu.classList.toggle("active");
 });
 
-navMenu.addEventListener("click", event => {
+navMenu && navMenu.addEventListener("click", event => {
   const target = event.target;
   if (target.tagName === "A" && target.dataset.title && target.dataset.content) {
     event.preventDefault();
@@ -311,8 +347,8 @@ navMenu.addEventListener("click", event => {
     modalOverlay.classList.add("show");
   }
 });
-closeModalBtn.addEventListener("click", () => modalOverlay.classList.remove("show"));
-modalOverlay.addEventListener("click", event => {
+closeModalBtn && closeModalBtn.addEventListener("click", () => modalOverlay.classList.remove("show"));
+modalOverlay && modalOverlay.addEventListener("click", event => {
   if (event.target === modalOverlay) modalOverlay.classList.remove("show");
 });
 
