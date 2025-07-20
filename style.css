@@ -582,3 +582,76 @@ textarea{
  50%  {color: #FF5555;text-shadow: 0px 0px 20px #FF5555;}
  100% {color:white;text-shadow: 0px 0px 20px #FF5555;;}
 }
+.reaction-container {
+  margin-top: 8px;
+  display: flex;
+  gap: 5px;
+  
+}
+.reaction-btn {
+  all: unset;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, var(--color-white) , var(--color-white) );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--color-border);
+  transition: 
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease,
+    color 0.15s ease;
+  user-select: none;
+  font-family: inherit;
+  margin: 0 4px;
+  position: relative;
+}
+
+.reaction-btn .count {
+  font-size: 12px;
+  margin-left: 4px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.reaction-btn.active {
+  background: radial-gradient(circle at 30% 30%, var(--color-white) , var(--color-text-main));
+  color: #d11144;
+  font-weight: 600;
+  transform: scale(1.12);
+  z-index: 1;
+  width: 50px;
+  border-radius: 10px;
+}
+
+.reaction-btn:hover:not(.active) {
+  background: var(--color-white) ;
+  color: #cc2244;
+  transform: scale(1.08);
+  box-shadow: 0 3px 6px var(--color-border);
+}
+
+.reaction-btn:active:not(.disabled) {
+  transform: scale(0.96);
+}
+
+.reaction-btn:disabled {
+  background: var(--color-white) ;
+  color: var(--color-text-muted);
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .reaction-btn:hover:not(.active) {
+    transform: scale(1.02);
+    box-shadow: none;
+  }
+}
