@@ -593,7 +593,7 @@ textarea{
   cursor: pointer;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: 10px;
   background: linear-gradient(to bottom right, var(--color-white) , var(--color-white) );
   display: flex;
   align-items: center;
@@ -626,7 +626,6 @@ textarea{
   transform: scale(1.12);
   z-index: 1;
   width: 50px;
-  border-radius: 10px;
 }
 
 .reaction-btn:hover:not(.active) {
